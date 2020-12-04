@@ -28,6 +28,8 @@ public:
     auto const& address() const { return address_; }
     auto const& values() const { return values_; }
 
+    int32 space() const;
+
     message& operator<<(value v)
     {
         values_.push_back(std::move(v));

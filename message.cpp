@@ -20,6 +20,14 @@ message::message(string address) : address_(std::move(address))
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+int32 message::space() const
+{
+    int32 total = 0;
+    for(auto const& val : values()) total += val.space();
+    return total;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::ostream& operator<<(std::ostream& os, const message& msg)
 {
     write_to(os, msg.address());
