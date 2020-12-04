@@ -5,38 +5,43 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef OSC_TYPES_HPP
-#define OSC_TYPES_HPP
+#include "types.hpp"
+#include <arpa/inet.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-#include <cstddef>
-#include <ostream>
-#include <string>
-#include <vector>
-
-////////////////////////////////////////////////////////////////////////////////
-namespace osc
+namespace osc::internal
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using int32   = std::int32_t;
-using float32 = float;
-using string  = std::string;
-using blob    = std::vector<char>;
+void write_to(std::ostream& os, int32 i)
+{
+    i = htonl(i);
+    os.write(reinterpret_cast<char*>(&i), sizeof(i));
+}
 
 ////////////////////////////////////////////////////////////////////////////////
-namespace internal
+void write_to(std::ostream& os, float32 f)
 {
+    write_to(os, *reinterpret_cast<int32*>(&f));
+}
 
-void write_to(std::ostream&, int32  );
-void write_to(std::ostream&, float32);
-void write_to(std::ostream&, string );
-void write_to(std::ostream&, blob   );
+////////////////////////////////////////////////////////////////////////////////
+void write_to(std::ostream& os, string s)
+{
+    // add terminating null and pad to multiple of 4
+    s.resize(((s.size() + 4) / 4) * 4);
+    os.write(s.data(), s.size());
+}
 
+////////////////////////////////////////////////////////////////////////////////
+void write_to(std::ostream& os, blob b)
+{
+    write_to(os, static_cast<int32>(b.size()));
+
+    // pad to multiple of 4
+    b.resize(((b.size() + 3) / 4) * 4);
+    os.write(b.data(), b.size());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 }
-
-////////////////////////////////////////////////////////////////////////////////
-#endif
