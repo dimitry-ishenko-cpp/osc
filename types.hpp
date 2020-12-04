@@ -31,17 +31,6 @@ using int64   = std::int64_t;
 using time    = clock::time_point;
 
 ////////////////////////////////////////////////////////////////////////////////
-inline int32 space(int32  ) { return sizeof(int32  ); }
-inline int32 space(float32) { return sizeof(float32); }
-// add terminating null and pad to multiple of 4
-inline int32 space(const string& s) { return ((s.size() + 4) / 4) * 4; }
-// pad to multiple of 4
-inline int32 space(const blob& b) { return ((b.size() + 3) / 4) * 4; }
-
-inline int32 space(int64  ) { return sizeof(int64  ); }
-inline int32 space(time   ) { return sizeof(int64  ); } // NB
-
-////////////////////////////////////////////////////////////////////////////////
 namespace internal
 {
 
@@ -53,7 +42,18 @@ void write_to(std::ostream&, blob   );
 void write_to(std::ostream&, int64  );
 void write_to(std::ostream&, time   );
 
+inline int32 padded(int32 x) { return ((x + 3) / 4) * 4; }
+
 }
+
+////////////////////////////////////////////////////////////////////////////////
+inline int32 space(int32  ) { return sizeof(int32  ); }
+inline int32 space(float32) { return sizeof(float32); }
+inline int32 space(const string& s) { return internal::padded(s.size() + 1); }
+inline int32 space(const blob& b) { return space(int32{}) + internal::padded(b.size()); }
+
+inline int32 space(int64  ) { return sizeof(int64  ); }
+inline int32 space(time   ) { return sizeof(int64  ); } // NB: int64 is correct
 
 ////////////////////////////////////////////////////////////////////////////////
 }

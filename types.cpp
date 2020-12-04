@@ -28,7 +28,7 @@ void write_to(std::ostream& os, float32 f)
 ////////////////////////////////////////////////////////////////////////////////
 void write_to(std::ostream& os, string s)
 {
-    s.resize(space(s));
+    s.resize(padded(s.size() + 1));
     os.write(s.data(), s.size());
 }
 
@@ -36,7 +36,7 @@ void write_to(std::ostream& os, string s)
 void write_to(std::ostream& os, blob b)
 {
     write_to(os, static_cast<int32>(b.size()));
-    b.resize(space(b));
+    b.resize(padded(b.size()));
     os.write(b.data(), b.size());
 }
 
