@@ -11,6 +11,8 @@
 namespace osc
 {
 
+using namespace internal;
+
 ////////////////////////////////////////////////////////////////////////////////
 message::message(string address) : address_(std::move(address))
 {
@@ -20,11 +22,11 @@ message::message(string address) : address_(std::move(address))
 ////////////////////////////////////////////////////////////////////////////////
 std::ostream& operator<<(std::ostream& os, const message& msg)
 {
-    os << value(msg.address());
+    write_to(os, msg.address());
 
     string tags = ",";
     for(auto const& val : msg.values()) tags += val.tag();
-    os << value(tags);
+    write_to(os, tags);
 
     for(auto const& val : msg.values()) os << val;
 
