@@ -53,16 +53,16 @@ void write_to(std::ostream& os, osc::time time)
     using namespace std::chrono;
     using namespace std::chrono_literals;
 
-    using sec_t = duration<int64, std::ratio<1, 1>>;
-    using frac_t = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
+    using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
 
     // "shift" epoch from 1/1/1970 (unix) to 1/1/1900 (osc)
-    // which is 70 years + 17 leap days (https://stackoverflow.com/a/29138806/4358570)
+    // which is 70 years + 17 leap days
+    // ref: https://stackoverflow.com/a/65149566/4358570
     time += (70 * 365 + 17) * 24h;
 
-    auto total = time.time_since_epoch(); // total duration
-    auto sec = duration_cast<sec_t>(total); // seconds
-    auto frac = duration_cast<frac_t>(total) - sec; // fractions
+    auto total = time.time_since_epoch();
+    auto sec = duration_cast<seconds>(total);
+    auto frac = duration_cast<fractions>(total - sec);
 
     write_to(os, static_cast<int64>((sec.count() << 32) | frac.count()));
 }
