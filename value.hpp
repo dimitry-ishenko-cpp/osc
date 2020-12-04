@@ -43,6 +43,8 @@ public:
     auto const& to_string () const { return to<string >(); }
     auto const& to_blob   () const { return to<blob   >(); }
 
+    int32 space() const;
+
 private:
     char tag_;
     std::variant<int32, float32, string, blob> value_;
