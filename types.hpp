@@ -19,6 +19,8 @@
 namespace osc
 {
 
+using clock = std::chrono::system_clock;
+
 ////////////////////////////////////////////////////////////////////////////////
 using int32   = std::int32_t;
 using float32 = float;
@@ -26,7 +28,7 @@ using string  = std::string;
 using blob    = std::vector<char>;
 
 using int64   = std::int64_t;
-using time    = std::chrono::system_clock::time_point;
+using time    = clock::time_point;
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace internal
