@@ -12,6 +12,7 @@
 #include "message.hpp"
 #include "types.hpp"
 
+#include <ostream>
 #include <variant>
 #include <vector>
 
@@ -25,17 +26,21 @@ class bundle
 public:
     class element;
 
-    bundle(time t = clock::now()) : time_(std::move(t)) { }
+    bundle(osc::time t = clock::now()) : time_(std::move(t)) { }
 
+    auto const& time() const { return time_; }
     auto const& elements() const { return elements_; }
     int32 space() const;
 
     bundle& operator<<(element);
 
 private:
-    time time_;
+    osc::time time_;
     std::vector<element> elements_;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+std::ostream& operator<<(std::ostream&, const bundle&);
 
 ////////////////////////////////////////////////////////////////////////////////
 class bundle::element
@@ -55,6 +60,9 @@ public:
 private:
     std::variant<message, bundle> cont_;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+std::ostream& operator<<(std::ostream&, const bundle::element&);
 
 ////////////////////////////////////////////////////////////////////////////////
 inline bundle& bundle::operator<<(element e)
