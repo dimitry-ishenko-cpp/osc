@@ -31,17 +31,17 @@ public:
 
     template<typename T>
     bool is() const { return std::holds_alternative<T>(value_); }
-    bool is_int32() const { return is<int32>(); }
+    bool is_int32  () const { return is<int32  >(); }
     bool is_float32() const { return is<float32>(); }
-    bool is_string() const { return is<string>(); }
-    bool is_blob() const { return is<blob>(); }
+    bool is_string () const { return is<string >(); }
+    bool is_blob   () const { return is<blob   >(); }
 
     template<typename T>
     auto to() const { return std::get<T>(value_); }
-    auto to_int32() const { return to<int32>(); }
+    auto to_int32  () const { return to<int32  >(); }
     auto to_float32() const { return to<float32>(); }
-    auto to_string() const { return to<string>(); }
-    auto to_blob() const { return to<blob>(); }
+    auto to_string () const { return to<string >(); }
+    auto to_blob   () const { return to<blob   >(); }
 
 private:
     char tag_;
