@@ -1,0 +1,32 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2020 Dimitry Ishenko
+// Contact: dimitry (dot) ishenko (at) (gee) mail (dot) com
+//
+// Distributed under the GNU GPL license. See the LICENSE.md file for details.
+
+////////////////////////////////////////////////////////////////////////////////
+#include "bundle.hpp"
+#include <stdexcept>
+
+////////////////////////////////////////////////////////////////////////////////
+namespace osc
+{
+
+////////////////////////////////////////////////////////////////////////////////
+int32 bundle::space() const
+{
+    int32 total = 0;
+    for(auto const& elem : elements()) total += elem.space();
+    return total;
+}
+
+int32 bundle::element::space() const
+{
+    if(is_message()) return to_message().space();
+    else if(is_bundle()) return to_bundle().space();
+
+    throw std::invalid_argument("osc::bundle::element::space(): invalid type");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+}
