@@ -21,7 +21,7 @@ int32 value::space() const
     else if(is_float32()) return osc::space(to_float32());
     else if(is_string ()) return osc::space(to_string ());
     else if(is_blob   ()) return osc::space(to_blob   ());
-    else throw std::invalid_argument("osc::value::space()): invalid value type");
+    else throw std::invalid_argument("osc::value::space()): invalid type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ std::ostream& operator<<(std::ostream& os, const value& val)
     else if(val.is_float32()) write_to(os, val.to_float32());
     else if(val.is_string ()) write_to(os, val.to_string ());
     else if(val.is_blob   ()) write_to(os, val.to_blob   ());
-    else throw std::invalid_argument("operator<<(osc::value): invalid value type");
+    else throw std::invalid_argument("operator<<(osc::value): invalid type");
 
     return os;
 }
