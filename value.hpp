@@ -37,11 +37,11 @@ public:
     bool is_blob   () const { return is<blob   >(); }
 
     template<typename T>
-    auto to() const { return std::get<T>(value_); }
-    auto to_int32  () const { return to<int32  >(); }
-    auto to_float32() const { return to<float32>(); }
-    auto to_string () const { return to<string >(); }
-    auto to_blob   () const { return to<blob   >(); }
+    auto const& to() const { return std::get<T>(value_); }
+    auto const& to_int32  () const { return to<int32  >(); }
+    auto const& to_float32() const { return to<float32>(); }
+    auto const& to_string () const { return to<string >(); }
+    auto const& to_blob   () const { return to<blob   >(); }
 
 private:
     char tag_;
