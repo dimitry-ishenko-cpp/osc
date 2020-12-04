@@ -28,8 +28,7 @@ void write_to(std::ostream& os, float32 f)
 ////////////////////////////////////////////////////////////////////////////////
 void write_to(std::ostream& os, string s)
 {
-    // add terminating null and pad to multiple of 4
-    s.resize(((s.size() + 4) / 4) * 4);
+    s.resize(space(s));
     os.write(s.data(), s.size());
 }
 
@@ -37,9 +36,7 @@ void write_to(std::ostream& os, string s)
 void write_to(std::ostream& os, blob b)
 {
     write_to(os, static_cast<int32>(b.size()));
-
-    // pad to multiple of 4
-    b.resize(((b.size() + 3) / 4) * 4);
+    b.resize(space(b));
     os.write(b.data(), b.size());
 }
 
@@ -67,7 +64,7 @@ void write_to(std::ostream& os, osc::time time)
     auto sec = duration_cast<sec_t>(total); // seconds
     auto frac = duration_cast<frac_t>(total) - sec; // fractions
 
-    write_to(os, (sec.count() << 32) | frac.count());
+    write_to(os, static_cast<int64>((sec.count() << 32) | frac.count()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

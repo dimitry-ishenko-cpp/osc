@@ -31,6 +31,17 @@ using int64   = std::int64_t;
 using time    = clock::time_point;
 
 ////////////////////////////////////////////////////////////////////////////////
+inline int32 space(int32  ) { return sizeof(int32  ); }
+inline int32 space(float32) { return sizeof(float32); }
+// add terminating null and pad to multiple of 4
+inline int32 space(const string& s) { return ((s.size() + 4) / 4) * 4; }
+// pad to multiple of 4
+inline int32 space(const blob& b) { return ((b.size() + 3) / 4) * 4; }
+
+inline int32 space(int64  ) { return sizeof(int64  ); }
+inline int32 space(time   ) { return sizeof(int64  ); } // NB
+
+////////////////////////////////////////////////////////////////////////////////
 namespace internal
 {
 
