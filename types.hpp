@@ -9,6 +9,7 @@
 #define OSC_TYPES_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include <chrono>
 #include <cstddef>
 #include <ostream>
 #include <string>
@@ -24,6 +25,9 @@ using float32 = float;
 using string  = std::string;
 using blob    = std::vector<char>;
 
+using int64   = std::int64_t;
+using time    = std::chrono::system_clock::time_point;
+
 ////////////////////////////////////////////////////////////////////////////////
 namespace internal
 {
@@ -32,6 +36,9 @@ void write_to(std::ostream&, int32  );
 void write_to(std::ostream&, float32);
 void write_to(std::ostream&, string );
 void write_to(std::ostream&, blob   );
+
+void write_to(std::ostream&, int64  );
+void write_to(std::ostream&, time   );
 
 }
 
