@@ -9,7 +9,7 @@
 #define OSC_VALUE_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "types.hpp"
+#include "osc++/types.hpp"
 
 #include <ostream>
 #include <variant>

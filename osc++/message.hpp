@@ -9,8 +9,8 @@
 #define OSC_MESSAGE_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "types.hpp"
-#include "value.hpp"
+#include "osc++/types.hpp"
+#include "osc++/value.hpp"
 
 #include <ostream>
 #include <vector>
