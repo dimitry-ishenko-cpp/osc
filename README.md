@@ -6,11 +6,11 @@
 
 Binary (Debian/Ubuntu/etc):
 ```console
-ver=0.1
-url=https://github.com/dimitry-ishenko-casparcg/libosc/releases/download/v${ver}
-wget ${url}/libosc++_${ver}_amd64.deb
-wget ${url}/libosc++-dev_${ver}_amd64.deb
-sudo apt install ./libosc++_${ver}_amd64.deb ./libosc++-dev_${ver}_amd64.deb
+$ ver=0.1
+$ url=https://github.com/dimitry-ishenko-casparcg/libosc/releases/download/v${ver}
+$ wget ${url}/libosc++_${ver}_amd64.deb
+$ wget ${url}/libosc++-dev_${ver}_amd64.deb
+$ sudo apt install ./libosc++_${ver}_amd64.deb ./libosc++-dev_${ver}_amd64.deb
 ```
 
 Compile from source:
