@@ -29,6 +29,7 @@ using blob    = std::vector<char>;
 
 using int64   = std::int64_t;
 using time    = clock::time_point;
+using float64 = double;
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace internal
@@ -41,6 +42,7 @@ void write_to(std::ostream&, blob   );
 
 void write_to(std::ostream&, int64  );
 void write_to(std::ostream&, time   );
+void write_to(std::ostream&, float64);
 
 inline int32 padded(int32 x) { return ((x + 3) / 4) * 4; }
 
@@ -54,6 +56,7 @@ inline int32 space(const blob& b) { return space(int32{}) + internal::padded(b.s
 
 inline int32 space(int64  ) { return sizeof(int64  ); }
 inline int32 space(time   ) { return sizeof(int64  ); } // NB: int64 is correct
+inline int32 space(float64) { return sizeof(float64); }
 
 ////////////////////////////////////////////////////////////////////////////////
 }
