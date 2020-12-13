@@ -9,10 +9,10 @@
 #define OSC_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "osc++/bundle.hpp"
-#include "osc++/message.hpp"
-#include "osc++/types.hpp"
-#include "osc++/value.hpp"
+#include <osc++/bundle.hpp>
+#include <osc++/message.hpp>
+#include <osc++/types.hpp>
+#include <osc++/value.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
