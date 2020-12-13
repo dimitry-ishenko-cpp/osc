@@ -4,7 +4,7 @@
 
 Binary (Debian/Ubuntu/etc):
 ```console
-$ ver=0.1
+$ ver=0.2
 $ url=https://github.com/dimitry-ishenko-casparcg/libosc/releases/download/v${ver}
 $ wget ${url}/libosc++_${ver}_amd64.deb
 $ wget ${url}/libosc++-dev_${ver}_amd64.deb
