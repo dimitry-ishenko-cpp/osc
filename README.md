@@ -2,8 +2,6 @@
 
 ## Installation
 
-### System-wide
-
 Binary (Debian/Ubuntu/etc):
 ```console
 $ ver=0.1
@@ -23,15 +21,10 @@ Clone and compile from repository:
 TODO
 ```
 
-Usage example:
+## Usage
 
+Usage examples:
 ```cpp
-TODO
-```
-
-### As project submodule
-
-```console
 TODO
 ```
 
