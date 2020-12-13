@@ -22,10 +22,11 @@ namespace osc
 class value
 {
 public:
-    value(int32  d) : tag_('i'), value_(d) { }
+    value(int32  i) : tag_('i'), value_(i) { }
     value(float  f) : tag_('f'), value_(f) { }
     value(string s) : tag_('s'), value_(std::move(s)) { }
     value(blob   b) : tag_('b'), value_(std::move(b)) { }
+    value(int64  i) : tag_('h'), value_(i) { }
 
     auto tag() const { return tag_; }
 
@@ -35,6 +36,7 @@ public:
     bool is_float () const { return is<float >(); }
     bool is_string() const { return is<string>(); }
     bool is_blob  () const { return is<blob  >(); }
+    bool is_int64 () const { return is<int64 >(); }
 
     template<typename T>
     auto const& to() const { return std::get<T>(value_); }
@@ -42,12 +44,15 @@ public:
     auto const& to_float () const { return to<float >(); }
     auto const& to_string() const { return to<string>(); }
     auto const& to_blob  () const { return to<blob  >(); }
+    auto const& to_int64 () const { return to<int64 >(); }
 
     int32 space() const;
 
 private:
     char tag_;
-    std::variant<int32, float, string, blob> value_;
+    std::variant<int32, float, string, blob,
+        int64
+    > value_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
