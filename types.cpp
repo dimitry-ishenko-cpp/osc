@@ -20,7 +20,7 @@ void write_to(std::ostream& os, int32 i)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void write_to(std::ostream& os, float32 f)
+void write_to(std::ostream& os, float f)
 {
     write_to(os, *reinterpret_cast<int32*>(&f));
 }
@@ -68,9 +68,9 @@ void write_to(std::ostream& os, osc::time time)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void write_to(std::ostream& os, float64 f)
+void write_to(std::ostream& os, double d)
 {
-    write_to(os, *reinterpret_cast<int64*>(&f));
+    write_to(os, *reinterpret_cast<int64*>(&d));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
