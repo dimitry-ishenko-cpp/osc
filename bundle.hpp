@@ -9,8 +9,6 @@
 #define OSC_BUNDLE_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "message.hpp"
-#include "packet.hpp"
 #include "types.hpp"
 
 #include <variant>
@@ -20,12 +18,13 @@
 namespace osc
 {
 
+class element;
+class packet;
+
 ////////////////////////////////////////////////////////////////////////////////
 class bundle
 {
 public:
-    class element;
-
     bundle(osc::time t = clock::now()) : time_(std::move(t)) { }
 
     auto const& time() const { return time_; }
@@ -41,36 +40,8 @@ private:
     std::vector<element> elements_;
 
     void append_to(packet&) const;
+    friend class element;
 };
-
-////////////////////////////////////////////////////////////////////////////////
-class bundle::element
-{
-public:
-    element(message m) : element_(std::move(m)) { }
-    element(bundle  b) : element_(std::move(b)) { }
-
-    bool is_message() const { return std::holds_alternative<message>(element_); }
-    bool is_bundle () const { return std::holds_alternative<bundle >(element_); }
-
-    auto const& to_message() const { return std::get<message>(element_); }
-    auto const& to_bundle () const { return std::get<bundle >(element_); }
-
-    int32 space() const;
-
-private:
-    std::variant<message, bundle> element_;
-
-    void append_to(packet&) const;
-    friend class bundle;
-};
-
-////////////////////////////////////////////////////////////////////////////////
-inline bundle& bundle::operator<<(element e)
-{
-    elements_.push_back(std::move(e));
-    return *this;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 }

@@ -5,49 +5,33 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef OSC_MESSAGE_HPP
-#define OSC_MESSAGE_HPP
-
-////////////////////////////////////////////////////////////////////////////////
-#include "types.hpp"
+#include "element.hpp"
+#include "packet.hpp"
 #include "value.hpp"
 
-#include <vector>
+#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
 
-class packet;
-
 ////////////////////////////////////////////////////////////////////////////////
-class message
+int32 element::space() const
 {
-public:
-    message(string address);
-
-    auto const& address() const { return address_; }
-    auto const& values() const { return values_; }
-
-    message& operator<<(value v)
-    {
-        values_.push_back(std::move(v));
-        return *this;
-    }
-
-    int32 space() const;
-    packet to_packet() const;
-
-private:
-    string address_;
-    std::vector<value> values_;
-
-    void append_to(packet&) const;
-    friend class element;
-};
-
-////////////////////////////////////////////////////////////////////////////////
+         if(is_message()) return to_message().space();
+    else if(is_bundle ()) return to_bundle ().space();
+         else throw std::invalid_argument("osc::bundle::element::space(): invalid type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-#endif
+void element::append_to(packet& pkt) const
+{
+    value::append_to(pkt, space());
+
+         if(is_message()) to_message().append_to(pkt);
+    else if(is_bundle ()) to_bundle ().append_to(pkt);
+    else throw std::invalid_argument("operator<<(osc::bundle::element): invalid type");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+}

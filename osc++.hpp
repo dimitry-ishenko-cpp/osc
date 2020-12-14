@@ -10,7 +10,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include <osc++/bundle.hpp>
+#include <osc++/element.hpp>
 #include <osc++/message.hpp>
+#include <osc++/packet.hpp>
 #include <osc++/types.hpp>
 #include <osc++/value.hpp>
 

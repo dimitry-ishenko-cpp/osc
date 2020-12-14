@@ -5,14 +5,13 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef OSC_MESSAGE_HPP
-#define OSC_MESSAGE_HPP
+#ifndef OSC_ELEMENT_HPP
+#define OSC_ELEMENT_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "bundle.hpp"
+#include "message.hpp"
 #include "types.hpp"
-#include "value.hpp"
-
-#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -21,29 +20,25 @@ namespace osc
 class packet;
 
 ////////////////////////////////////////////////////////////////////////////////
-class message
+class element
 {
 public:
-    message(string address);
+    element(message m) : element_(std::move(m)) { }
+    element(bundle  b) : element_(std::move(b)) { }
 
-    auto const& address() const { return address_; }
-    auto const& values() const { return values_; }
+    bool is_message() const { return std::holds_alternative<message>(element_); }
+    bool is_bundle () const { return std::holds_alternative<bundle >(element_); }
 
-    message& operator<<(value v)
-    {
-        values_.push_back(std::move(v));
-        return *this;
-    }
+    auto const& to_message() const { return std::get<message>(element_); }
+    auto const& to_bundle () const { return std::get<bundle >(element_); }
 
     int32 space() const;
-    packet to_packet() const;
 
 private:
-    string address_;
-    std::vector<value> values_;
+    std::variant<message, bundle> element_;
 
     void append_to(packet&) const;
-    friend class element;
+    friend class bundle;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

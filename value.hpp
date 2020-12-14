@@ -92,6 +92,7 @@ private:
     static void append_to(packet&, inf_t) { }
 
     friend class bundle;
+    friend class element;
     friend class message;
 };
 

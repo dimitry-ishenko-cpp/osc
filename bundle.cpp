@@ -6,11 +6,22 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "bundle.hpp"
+#include "element.hpp"
+#include "packet.hpp"
+#include "value.hpp"
+
 #include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
+
+////////////////////////////////////////////////////////////////////////////////
+inline bundle& bundle::operator<<(element e)
+{
+    elements_.push_back(std::move(e));
+    return *this;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 int32 bundle::space() const
@@ -36,24 +47,6 @@ void bundle::append_to(packet& pkt) const
     value::append_to(pkt, time());
 
     for(auto const& e : elements()) e.append_to(pkt);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-int32 bundle::element::space() const
-{
-         if(is_message()) return to_message().space();
-    else if(is_bundle ()) return to_bundle ().space();
-         else throw std::invalid_argument("osc::bundle::element::space(): invalid type");
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void bundle::element::append_to(packet& pkt) const
-{
-    value::append_to(pkt, space());
-
-         if(is_message()) to_message().append_to(pkt);
-    else if(is_bundle ()) to_bundle ().append_to(pkt);
-    else throw std::invalid_argument("operator<<(osc::bundle::element): invalid type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
