@@ -24,12 +24,12 @@ int32 element::space() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void element::append_to(packet& pkt) const
+void element::append_to(packet& p) const
 {
-    value::append_to(pkt, space());
+    value::append_to(p, space());
 
-         if(is_message()) to_message().append_to(pkt);
-    else if(is_bundle ()) to_bundle ().append_to(pkt);
+         if(is_message()) to_message().append_to(p);
+    else if(is_bundle ()) to_bundle ().append_to(p);
     else throw std::invalid_argument("operator<<(osc::bundle::element): invalid type");
 }
 
