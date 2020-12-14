@@ -47,19 +47,19 @@ private:
 class bundle::element
 {
 public:
-    element(message m) : cont_(std::move(m)) { }
-    element(bundle  b) : cont_(std::move(b)) { }
+    element(message m) : element_(std::move(m)) { }
+    element(bundle  b) : element_(std::move(b)) { }
 
-    bool is_message() const { return std::holds_alternative<message>(cont_); }
-    bool is_bundle () const { return std::holds_alternative<bundle >(cont_); }
+    bool is_message() const { return std::holds_alternative<message>(element_); }
+    bool is_bundle () const { return std::holds_alternative<bundle >(element_); }
 
-    auto const& to_message() const { return std::get<message>(cont_); }
-    auto const& to_bundle () const { return std::get<bundle >(cont_); }
+    auto const& to_message() const { return std::get<message>(element_); }
+    auto const& to_bundle () const { return std::get<bundle >(element_); }
 
     int32 space() const;
 
 private:
-    std::variant<message, bundle> cont_;
+    std::variant<message, bundle> element_;
 
     void append_to(packet&) const;
     friend class bundle;
