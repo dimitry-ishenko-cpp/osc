@@ -34,22 +34,22 @@ int32 message::space() const
 ////////////////////////////////////////////////////////////////////////////////
 packet message::to_packet() const
 {
-    packet pkt;
-    append_to(pkt);
+    packet p;
+    append_to(p);
 
-    return pkt;
+    return p;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void message::append_to(packet& pkt) const
+void message::append_to(packet& p) const
 {
-    value::append_to(pkt, address());
+    value::append_to(p, address());
 
     string tags = ",";
     for(auto const& v : values()) tags += v.tag();
-    value::append_to(pkt, tags);
+    value::append_to(p, tags);
 
-    for(auto const& v : values()) v.append_to(pkt);
+    for(auto const& v : values()) v.append_to(p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
