@@ -35,6 +35,9 @@ public:
     int32 space() const;
     packet to_packet() const;
 
+    static bool maybe(packet&);
+    static bundle parse(packet&);
+
 private:
     osc::time time_;
     std::vector<element> elements_;
