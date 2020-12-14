@@ -12,25 +12,30 @@
 namespace osc
 {
 
-using namespace internal;
-
 ////////////////////////////////////////////////////////////////////////////////
 int32 bundle::space() const
 {
     int32 total = 0;
-    for(auto const& elem : elements()) total += elem.space();
+    for(auto const& e : elements()) total += e.space();
     return total;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& os, const bundle& b)
+packet bundle::to_packet() const
 {
-    write_to(os, string("#bundle"));
-    write_to(os, b.time());
+    packet pkt;
+    append_to(pkt);
 
-    for(auto const& e : b.elements()) os << e;
+    return pkt;
+}
 
-    return os;
+////////////////////////////////////////////////////////////////////////////////
+void bundle::append_to(packet& pkt) const
+{
+    value::append_to(pkt, string("#bundle"));
+    value::append_to(pkt, time());
+
+    for(auto const& e : elements()) e.append_to(pkt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,17 +43,17 @@ int32 bundle::element::space() const
 {
          if(is_message()) return to_message().space();
     else if(is_bundle ()) return to_bundle ().space();
-    else throw std::invalid_argument("osc::bundle::element::space(): invalid type");
+         else throw std::invalid_argument("osc::bundle::element::space(): invalid type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& os, const bundle::element& e)
+void bundle::element::append_to(packet& pkt) const
 {
-    write_to(os, e.space());
-         if(e.is_message()) os << e.to_message();
-    else if(e.is_bundle ()) os << e.to_bundle ();
+    value::append_to(pkt, space());
+
+         if(is_message()) to_message().append_to(pkt);
+    else if(is_bundle ()) to_bundle ().append_to(pkt);
     else throw std::invalid_argument("operator<<(osc::bundle::element): invalid type");
-    return os;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

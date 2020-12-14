@@ -9,6 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(HEADERS
     bundle.hpp
     message.hpp
+    packet.hpp
     types.hpp
     value.hpp
 )
@@ -17,7 +18,7 @@ set(OVERALL_HEADER osc++.hpp)
 set(SOURCES
     bundle.cpp
     message.cpp
-    types.cpp
+    packet.cpp
     value.cpp
 )
 

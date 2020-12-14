@@ -11,8 +11,6 @@
 namespace osc
 {
 
-using namespace internal;
-
 ////////////////////////////////////////////////////////////////////////////////
 message::message(string address) : address_(std::move(address))
 {
@@ -28,17 +26,24 @@ int32 message::space() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& os, const message& msg)
+packet message::to_packet() const
 {
-    write_to(os, msg.address());
+    packet pkt;
+    append_to(pkt);
+
+    return pkt;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void message::append_to(packet& pkt) const
+{
+    value::append_to(pkt, address());
 
     string tags = ",";
-    for(auto const& val : msg.values()) tags += val.tag();
-    write_to(os, tags);
+    for(auto const& v : values()) tags += v.tag();
+    value::append_to(pkt, tags);
 
-    for(auto const& val : msg.values()) os << val;
-
-    return os;
+    for(auto const& v : values()) v.append_to(pkt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

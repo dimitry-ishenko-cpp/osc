@@ -10,9 +10,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "message.hpp"
+#include "packet.hpp"
 #include "types.hpp"
 
-#include <ostream>
 #include <variant>
 #include <vector>
 
@@ -30,17 +30,18 @@ public:
 
     auto const& time() const { return time_; }
     auto const& elements() const { return elements_; }
-    int32 space() const;
 
     bundle& operator<<(element);
+
+    int32 space() const;
+    packet to_packet() const;
 
 private:
     osc::time time_;
     std::vector<element> elements_;
-};
 
-////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream&, const bundle&);
+    void append_to(packet&) const;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 class bundle::element
@@ -59,10 +60,10 @@ public:
 
 private:
     std::variant<message, bundle> cont_;
-};
 
-////////////////////////////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream&, const bundle::element&);
+    void append_to(packet&) const;
+    friend class bundle;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 inline bundle& bundle::operator<<(element e)
