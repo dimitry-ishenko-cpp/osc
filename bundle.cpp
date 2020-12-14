@@ -34,19 +34,19 @@ int32 bundle::space() const
 ////////////////////////////////////////////////////////////////////////////////
 packet bundle::to_packet() const
 {
-    packet pkt;
-    append_to(pkt);
+    packet p;
+    append_to(p);
 
-    return pkt;
+    return p;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void bundle::append_to(packet& pkt) const
+void bundle::append_to(packet& p) const
 {
-    value::append_to(pkt, string("#bundle"));
-    value::append_to(pkt, time());
+    value::append_to(p, string("#bundle"));
+    value::append_to(p, time());
 
-    for(auto const& e : elements()) e.append_to(pkt);
+    for(auto const& e : elements()) e.append_to(p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
