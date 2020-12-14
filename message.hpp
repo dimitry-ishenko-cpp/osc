@@ -38,6 +38,9 @@ public:
     int32 space() const;
     packet to_packet() const;
 
+    static bool maybe(packet&);
+    static message parse(packet&);
+
 private:
     string address_;
     std::vector<value> values_;
