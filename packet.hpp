@@ -16,6 +16,9 @@
 namespace osc
 {
 
+class element;
+class message;
+
 ////////////////////////////////////////////////////////////////////////////////
 class packet
 {
@@ -27,10 +30,14 @@ public:
     const char* data() const { return data_.data(); }
     int32 size() const { return data_.size(); }
 
+    element parse();
+
 private:
     std::vector<char> data_;
     void append(const char*, int32);
 
+    friend class bundle;
+    friend class message;
     friend class value;
 };
 

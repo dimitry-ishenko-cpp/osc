@@ -5,11 +5,28 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "bundle.hpp"
+#include "element.hpp"
+#include "message.hpp"
 #include "packet.hpp"
+
+#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
+
+////////////////////////////////////////////////////////////////////////////////
+element packet::parse()
+{
+    if(bundle::maybe(*this))
+        return bundle::parse(*this);
+
+    else if(message::maybe(*this))
+        return message::parse(*this);
+
+    else throw std::invalid_argument("osc::packet::parse(): empty or invalid packet");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 void packet::append(const char* data, int32 size)
