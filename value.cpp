@@ -70,42 +70,42 @@ void value::append_to(packet& pkt) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, int32 i)
+void value::append_to(packet& p, int32 i)
 {
     i = htobe32(i);
-    pkt.append(reinterpret_cast<char*>(&i), sizeof(i));
+    p.append(reinterpret_cast<char*>(&i), sizeof(i));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, float f)
+void value::append_to(packet& p, float f)
 {
-    append_to(pkt, *reinterpret_cast<int32*>(&f));
+    append_to(p, *reinterpret_cast<int32*>(&f));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, string s)
+void value::append_to(packet& p, string s)
 {
     s.resize(padded(s.size() + 1));
-    pkt.append(s.data(), s.size());
+    p.append(s.data(), s.size());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, blob b)
+void value::append_to(packet& p, blob b)
 {
-    append_to(pkt, static_cast<int32>(b.size()));
+    append_to(p, static_cast<int32>(b.size()));
     b.resize(padded(b.size()));
-    pkt.append(b.data(), b.size());
+    p.append(b.data(), b.size());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, int64 i)
+void value::append_to(packet& p, int64 i)
 {
     i = htobe64(i);
-    pkt.append(reinterpret_cast<char*>(&i), sizeof(i));
+    p.append(reinterpret_cast<char*>(&i), sizeof(i));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, time t)
+void value::append_to(packet& p, time t)
 {
     using namespace std::chrono;
     using namespace std::chrono_literals;
@@ -121,19 +121,19 @@ void value::append_to(packet& pkt, time t)
     auto sec = duration_cast<seconds>(total);
     auto frac = duration_cast<fractions>(total - sec);
 
-    append_to(pkt, static_cast<int64>((sec.count() << 32) | frac.count()));
+    append_to(p, static_cast<int64>((sec.count() << 32) | frac.count()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, double d)
+void value::append_to(packet& p, double d)
 {
-    append_to(pkt, *reinterpret_cast<int64*>(&d));
+    append_to(p, *reinterpret_cast<int64*>(&d));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void value::append_to(packet& pkt, char c)
+void value::append_to(packet& p, char c)
 {
-    append_to(pkt, static_cast<int32>(c));
+    append_to(p, static_cast<int32>(c));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
