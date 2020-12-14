@@ -21,6 +21,8 @@ class packet
 {
 public:
     packet() = default;
+    packet(const char* data, int32 size) : packet(data, data + size) { }
+    packet(const char* begin, const char* end) : data_(begin, end) { }
 
     const char* data() const { return data_.data(); }
     int32 size() const { return data_.size(); }
