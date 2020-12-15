@@ -34,6 +34,9 @@ public:
 
     int32 space() const;
 
+    static bool maybe(packet&);
+    static element parse(packet&);
+
 private:
     std::variant<message, bundle> element_;
 

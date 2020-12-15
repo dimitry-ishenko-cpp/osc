@@ -37,6 +37,7 @@ private:
     void append(const char*, int32);
 
     friend class bundle;
+    friend class element;
     friend class message;
     friend class value;
 };

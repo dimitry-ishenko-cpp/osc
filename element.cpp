@@ -34,4 +34,28 @@ void element::append_to(packet& p) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool element::maybe(packet& p)
+{
+    return p.size() && !message::maybe(p) && !bundle::maybe(p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+element element::parse(packet& p)
+{
+    auto size = p.size() - value::parse_int32(p); // remaining packet size after this element
+
+    auto e = message::maybe(p) ? element(message::parse(p)) :
+        bundle::maybe(p) ? element(bundle::parse(p)) :
+    throw std::invalid_argument("osc::element::parse(osc::packet&): invalid element");
+
+    auto pad = size - p.size();
+    if(pad < 0 || pad > 3) throw std::invalid_argument(
+        "osc::element::parse(osc::packet&): invalid packet"
+    );
+    p.data_.erase(p.data_.begin(), p.data_.begin() + pad);
+
+    return e;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 }
