@@ -42,7 +42,8 @@ bool element::maybe(packet& p)
 ////////////////////////////////////////////////////////////////////////////////
 element element::parse(packet& p)
 {
-    auto size = p.size() - value::parse_int32(p); // remaining packet size after this element
+    auto size = value::parse_int32(p);
+    size = p.size() - size; // remaining packet size after this element
 
     auto e = message::maybe(p) ? element(message::parse(p)) :
         bundle::maybe(p) ? element(bundle::parse(p)) :
