@@ -52,13 +52,21 @@ void bundle::append_to(packet& p) const
 ////////////////////////////////////////////////////////////////////////////////
 bool bundle::maybe(packet& p)
 {
-    return p.size() && p.data_[0] == '#';
+    return p.data_.size() && p.data_[0] == '#';
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bundle bundle::parse(packet&)
+bundle bundle::parse(packet& p)
 {
-    return bundle();
+    auto s = value::parse_string(p);
+    if(s != "#bundle") throw std::invalid_argument(
+        "osc::bundle::parse(osc::packet&): missing '#bundle'"
+    );
+
+    bundle b(value::parse_time(p));
+    while(element::maybe(p)) b << element::parse(p);
+
+    return b;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
