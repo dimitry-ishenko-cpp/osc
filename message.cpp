@@ -55,13 +55,23 @@ void message::append_to(packet& p) const
 ////////////////////////////////////////////////////////////////////////////////
 bool message::maybe(packet& p)
 {
-    return p.size() && p.data_[0] == '/';
+    return p.data_.size() && p.data_[0] == '/';
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-message message::parse(packet&)
+message message::parse(packet& p)
 {
-    return message("/");
+    auto address = value::parse_string(p);
+    message m(address);
+
+    auto tags = value::parse_string(p);
+    if(tags.size() < 1 || tags[0] != ',') throw std::invalid_argument(
+        "osc::message::parse(packet&): missing ','"
+    );
+    tags.erase(0, 1);
+
+    for(auto t : tags) m << value::parse(p, t);
+    return m;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
