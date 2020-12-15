@@ -25,6 +25,7 @@ public:
     value(int32  i) : tag_('i'), value_(i) { }
     value(float  f) : tag_('f'), value_(f) { }
     value(string s) : tag_('s'), value_(std::move(s)) { }
+    value(const char* s) : value(string(s)) { }
     value(blob   b) : tag_('b'), value_(std::move(b)) { }
     value(int64  i) : tag_('h'), value_(i) { }
     value(time   t) : tag_('t'), value_(t) { }

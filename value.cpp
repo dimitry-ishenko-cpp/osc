@@ -51,7 +51,7 @@ int32 value::space() const
     else if(is_bool  ()) return space_( to_bool  ());
     else if(is_nil   ()) return space_( to_nil   ());
     else if(is_inf   ()) return space_( to_inf   ());
-         else throw std::invalid_argument("osc::value::space()): invalid type");
+    else throw std::invalid_argument("osc::value::space()): invalid type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
