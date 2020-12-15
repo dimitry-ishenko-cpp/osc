@@ -8,7 +8,9 @@
 #include "packet.hpp"
 #include "value.hpp"
 
+#include <algorithm>
 #include <stdexcept>
+
 #include <endian.h>
 
 ////////////////////////////////////////////////////////////////////////////////
