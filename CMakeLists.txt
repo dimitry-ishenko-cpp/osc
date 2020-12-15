@@ -55,7 +55,11 @@ set(CPACK_STRIP_FILES ON)
 set(CPACK_GENERATOR DEB)
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-    "Library for generating and parsing OSC packets."
+    "osc++: OSC Library for C++."
+)
+set(CPACK_PACKAGE_DESCRIPTION
+    "The osc++ library allows one to create and parse OSC (Open Sound Control)
+packets. Ref: http://opensoundcontrol.org/spec-1_0."
 )
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER
     "Dimitry Ishenko <dimitry (dot) ishenko (at) (gee) mail (dot) com>"
@@ -72,7 +76,8 @@ set(CPACK_DEBIAN_STATIC_PACKAGE_DEPENDS
 )
 
 include(CPack)
-cpack_add_component(shared)
-cpack_add_component(static DESCRIPTION
-    "This package contains headers and static libraries needed for development."
+cpack_add_component(shared DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}")
+cpack_add_component(static DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION}
+-
+This package contains headers and static libraries needed for development."
 )

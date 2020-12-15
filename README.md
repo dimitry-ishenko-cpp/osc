@@ -1,4 +1,6 @@
-# Library for generating and parsing OSC packets
+# osc++: OSC Library for C++
+
+The osc++ library allows one to create and parse [OSC (Open Sound Control)](http://opensoundcontrol.org/spec-1_0) packets.
 
 ## Installation
 
