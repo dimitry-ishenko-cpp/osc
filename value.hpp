@@ -94,6 +94,17 @@ private:
     friend class bundle;
     friend class element;
     friend class message;
+
+    static value parse(packet&, char tag);
+
+    static  int32 parse_int32 (packet&);
+    static  float parse_float (packet&);
+    static string parse_string(packet&);
+    static   blob parse_blob  (packet&);
+    static  int64 parse_int64 (packet&);
+    static   time parse_time  (packet&);
+    static double parse_double(packet&);
+    static   char parse_char  (packet&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
