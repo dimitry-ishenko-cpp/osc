@@ -27,7 +27,9 @@ public:
     auto const& time() const { return time_; }
     auto const& elements() const { return elements_; }
 
-    bundle& operator<<(element);
+    auto const& element(std::size_t n) const { return elements_[n]; }
+
+    bundle& operator<<(osc::element);
 
     int32 space() const;
     packet to_packet() const;
@@ -40,7 +42,7 @@ private:
     osc::elements elements_;
 
     void append_to(packet&) const;
-    friend class element;
+    friend class osc::element;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

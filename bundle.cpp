@@ -17,7 +17,7 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-inline bundle& bundle::operator<<(element e)
+inline bundle& bundle::operator<<(osc::element e)
 {
     elements_.push_back(std::move(e));
     return *this;
@@ -64,7 +64,7 @@ bundle bundle::parse(packet& p)
     );
 
     bundle b(value::parse_time(p));
-    while(element::maybe(p)) b << element::parse(p);
+    while(osc::element::maybe(p)) b << osc::element::parse(p);
 
     return b;
 }
