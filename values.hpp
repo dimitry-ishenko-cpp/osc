@@ -32,11 +32,9 @@ public:
 
 private:
     template<std::size_t n, typename T, typename... Us>
-    bool are_() const
+    inline bool are_() const
     {
-        if constexpr (sizeof...(Us) == 0)
-            return (*this)[n].is<T>();
-        else return (*this)[n].is<T>() && are_<n+1, Us...>();
+        return (*this)[n].is<T>() && (sizeof...(Us) ? are_<n + 1, Us...>() : true);
     }
 };
 
