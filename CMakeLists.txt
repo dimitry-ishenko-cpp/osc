@@ -13,6 +13,7 @@ set(HEADERS
     packet.hpp
     types.hpp
     value.hpp
+    values.hpp
 )
 set(OVERALL_HEADER osc++.hpp)
 

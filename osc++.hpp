@@ -15,6 +15,7 @@
 #include <osc++/packet.hpp>
 #include <osc++/types.hpp>
 #include <osc++/value.hpp>
+#include <osc++/values.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
