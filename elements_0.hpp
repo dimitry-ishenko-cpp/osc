@@ -27,7 +27,8 @@ public:
     template<typename... Ts> bool are() const;
 
 private:
-    template<std::size_t n, typename T, typename... Us> bool are_() const;
+    template<std::size_t n, typename T, typename... Us>
+    constexpr inline bool are_() const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
