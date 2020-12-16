@@ -13,6 +13,8 @@
 #include "message.hpp"
 #include "types.hpp"
 
+#include <variant>
+
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
@@ -26,11 +28,17 @@ public:
     element(message m) : element_(std::move(m)) { }
     element(bundle  b) : element_(std::move(b)) { }
 
-    bool is_message() const { return std::holds_alternative<message>(element_); }
-    bool is_bundle () const { return std::holds_alternative<bundle >(element_); }
+    template<typename T>
+    bool is() const { return std::holds_alternative<T>(element_); }
 
-    auto const& to_message() const { return std::get<message>(element_); }
-    auto const& to_bundle () const { return std::get<bundle >(element_); }
+    bool is_message() const { return is<message>(); }
+    bool is_bundle () const { return is<bundle >(); }
+
+    template<typename T>
+    auto const& to() const { return std::get<T>(element_); }
+
+    auto const& to_message() const { return to<message>(); }
+    auto const& to_bundle () const { return to<bundle >(); }
 
     int32 space() const;
 
