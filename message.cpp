@@ -43,11 +43,11 @@ packet message::to_packet() const
 ////////////////////////////////////////////////////////////////////////////////
 void message::append_to(packet& p) const
 {
-    value::append_to(p, address());
+    osc::value::append_to(p, address());
 
     string tags = ",";
     for(auto const& v : values()) tags += v.tag();
-    value::append_to(p, tags);
+    osc::value::append_to(p, tags);
 
     for(auto const& v : values()) v.append_to(p);
 }
@@ -61,16 +61,16 @@ bool message::maybe(packet& p)
 ////////////////////////////////////////////////////////////////////////////////
 message message::parse(packet& p)
 {
-    auto address = value::parse_string(p);
+    auto address = osc::value::parse_string(p);
     message m(address);
 
-    auto tags = value::parse_string(p);
+    auto tags = osc::value::parse_string(p);
     if(tags.size() < 1 || tags[0] != ',') throw std::invalid_argument(
         "osc::message::parse(packet&): missing ','"
     );
     tags.erase(0, 1);
 
-    for(auto t : tags) m << value::parse(p, t);
+    for(auto t : tags) m << osc::value::parse(p, t);
     return m;
 }
 

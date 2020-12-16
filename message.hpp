@@ -27,7 +27,9 @@ public:
     auto const& address() const { return address_; }
     auto const& values() const { return values_; }
 
-    message& operator<<(value v)
+    auto const& value(std::size_t n) const { return values_[n]; }
+
+    message& operator<<(osc::value v)
     {
         values_.push_back(std::move(v));
         return *this;
