@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <osc++/bundle.hpp>
 #include <osc++/element.hpp>
+#include <osc++/elements.hpp>
 #include <osc++/message.hpp>
 #include <osc++/packet.hpp>
 #include <osc++/types.hpp>

@@ -5,43 +5,30 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef OSC_BUNDLE_HPP
-#define OSC_BUNDLE_HPP
+#ifndef OSC_ELEMENTS_HPP
+#define OSC_ELEMENTS_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "types.hpp"
+#include "element.hpp"
 #include "elements_0.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
 
-class packet;
+////////////////////////////////////////////////////////////////////////////////
+template<typename... Ts>
+bool elements::are() const
+{
+    return size() == sizeof...(Ts) && are_<0, Ts...>();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
-class bundle
+template<std::size_t n, typename T, typename... Us>
+bool elements::are_() const
 {
-public:
-    bundle(osc::time t = clock::now()) : time_(std::move(t)) { }
-
-    auto const& time() const { return time_; }
-    auto const& elements() const { return elements_; }
-
-    bundle& operator<<(element);
-
-    int32 space() const;
-    packet to_packet() const;
-
-    static bool maybe(packet&);
-    static bundle parse(packet&);
-
-private:
-    osc::time time_;
-    osc::elements elements_;
-
-    void append_to(packet&) const;
-    friend class element;
-};
+    return (*this)[n].is<T>() && (sizeof...(Us) ? are_<n + 1, Us...>() : true);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 }
