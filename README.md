@@ -7,7 +7,7 @@ The osc++ library allows one to create and parse [OSC (Open Sound Control)](http
 Binary (Debian/Ubuntu/etc):
 
 ```console
-$ ver=0.4
+$ ver=0.5
 $ url=https://github.com/dimitry-ishenko-casparcg/osc/releases/download/v${ver}
 $ wget ${url}/libosc++_${ver}_amd64.deb
 $ wget ${url}/libosc++-dev_${ver}_amd64.deb
@@ -17,7 +17,7 @@ $ sudo apt install ./libosc++_${ver}_amd64.deb ./libosc++-dev_${ver}_amd64.deb
 Binary (RaspberryPi):
 
 ```console
-$ ver=0.4
+$ ver=0.5
 $ url=https://github.com/dimitry-ishenko-casparcg/osc/releases/download/v${ver}
 $ wget ${url}/libosc++_${ver}_armhf.deb
 $ wget ${url}/libosc++-dev_${ver}_armhf.deb
@@ -27,7 +27,7 @@ $ sudo apt install ./libosc++_${ver}_armhf.deb ./libosc++-dev_${ver}_armhf.deb
 Compile from source (requires [CMake](https://cmake.org/) >= 3.1):
 
 ```console
-$ ver=0.4
+$ ver=0.5
 $ wget https://github.com/dimitry-ishenko-casparcg/osc/archive/v${ver}.tar.gz
 $ tar xzf v${ver}.tar.gz
 $ mkdir osc-${ver}/build
@@ -52,7 +52,6 @@ $ sudo make install
 
 Usage examples:
 ```cpp
-TODO
 ```
 
 ## Authors
