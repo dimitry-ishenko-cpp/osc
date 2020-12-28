@@ -34,6 +34,7 @@ struct inf_t { explicit inf_t() = default; };
 namespace literals
 {
 
+constexpr auto immed = time::min();
 constexpr auto nil = nullptr;
 constexpr inf_t inf { };
 

@@ -22,7 +22,7 @@ class packet;
 class bundle
 {
 public:
-    bundle(osc::time t = clock::now()) : time_(std::move(t)) { }
+    bundle(osc::time t = immed) : time_(std::move(t)) { }
 
     auto const& time() const { return time_; }
     auto const& elements() const { return elements_; }

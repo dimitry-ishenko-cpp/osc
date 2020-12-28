@@ -114,16 +114,20 @@ void value::append_to(packet& p, time t)
 
     using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
 
-    // "shift" epoch from 1/1/1970 (unix) to 1/1/1900 (osc)
-    // which is 70 years + 17 leap days
-    // ref: https://stackoverflow.com/a/65149566/4358570
-    t += (70 * 365 + 17) * 24h;
+    if(t != immed)
+    {
+        // "shift" epoch from 1/1/1970 (unix) to 1/1/1900 (osc)
+        // which is 70 years + 17 leap days
+        // ref: https://stackoverflow.com/a/65149566/4358570
+        t += (70 * 365 + 17) * 24h;
 
-    auto total = t.time_since_epoch();
-    auto sec = duration_cast<seconds>(total);
-    auto frac = duration_cast<fractions>(total - sec);
+        auto total = t.time_since_epoch();
+        auto sec = duration_cast<seconds>(total);
+        auto frac = duration_cast<fractions>(total - sec);
 
-    append_to(p, static_cast<int64>((sec.count() << 32) | frac.count()));
+        append_to(p, static_cast<int64>((sec.count() << 32) | frac.count()));
+    }
+    else append_to(p, static_cast<int64>(1));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
