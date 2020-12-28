@@ -17,7 +17,6 @@ namespace osc
 ////////////////////////////////////////////////////////////////////////////////
 message::message(string s) : address_(std::move(s))
 {
-    // TODO: fully validate address
     if(address_.size() < 1 || address_[0] != '/') throw std::invalid_argument(
         "osc::message::message(osc::string): invalid address"
     );
