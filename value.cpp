@@ -87,6 +87,10 @@ void value::append_to(packet& p, float f)
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, string s)
 {
+    if(s.find('\0') != std::string::npos) throw std::invalid_argument(
+        "osc::value::append_to(packet&, string): '\0' inside string"
+    );
+
     s.resize(padded(s.size() + 1));
     p.append(s.data(), s.size());
 }
