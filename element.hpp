@@ -22,6 +22,7 @@ namespace osc
 class packet;
 
 ////////////////////////////////////////////////////////////////////////////////
+// An element of a bundle, which is either a bundle itself or a message.
 class element
 {
 public:
@@ -40,15 +41,15 @@ public:
     auto const& to_message() const { return to<message>(); }
     auto const& to_bundle () const { return to<bundle >(); }
 
-    int32 space() const;
+    int32 space() const; // space requirement
 
-    static bool maybe(packet&);
+    static bool maybe(packet&); // is this packet an element?
     static element parse(packet&);
 
 private:
     std::variant<message, bundle> element_;
 
-    void append_to(packet&) const;
+    void append_to(packet&) const; // append element to packet
     friend class bundle;
 };
 
