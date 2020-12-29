@@ -238,10 +238,12 @@ time value::parse_time(packet& p)
     // ref: https://stackoverflow.com/a/65149566/4358570
     t -= (70 * 365 + 17) * 24h;
 
-    auto i = parse_int64(p);
-
-    t += seconds(i >> 32);
-    t += duration_cast<clock::duration>( fractions(i & 0xffffffff) );
+    if(auto i = parse_int64(p); i != 1)
+    {
+        t += seconds(i >> 32);
+        t += duration_cast<clock::duration>( fractions(i & 0xffffffff) );
+    }
+    else t = immed;
 
     return t;
 }
