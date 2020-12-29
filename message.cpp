@@ -5,10 +5,9 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "errors.hpp"
 #include "message.hpp"
 #include "packet.hpp"
-
-#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -17,9 +16,7 @@ namespace osc
 ////////////////////////////////////////////////////////////////////////////////
 message::message(string s) : address_(std::move(s))
 {
-    if(address_.size() < 1 || address_[0] != '/') throw std::invalid_argument(
-        "osc::message::message(osc::string): invalid address"
-    );
+    if(address_.size() < 1 || address_[0] != '/') throw invalid_message("bad address");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,9 +61,7 @@ message message::parse(packet& p)
     message m(address);
 
     auto tags = osc::value::parse_string(p);
-    if(tags.size() < 1 || tags[0] != ',') throw std::invalid_argument(
-        "osc::message::parse(packet&): missing ','"
-    );
+    if(tags.size() < 1 || tags[0] != ',') throw invalid_packet("missing ','");
     tags.erase(0, 1);
 
     for(auto t : tags) m << osc::value::parse(p, t);

@@ -11,6 +11,7 @@ set(HEADERS
     element.hpp
     elements_0.hpp
     elements.hpp
+    errors.hpp
     message.hpp
     packet.hpp
     types.hpp

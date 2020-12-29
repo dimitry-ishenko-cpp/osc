@@ -7,10 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "bundle.hpp"
 #include "element.hpp"
+#include "errors.hpp"
 #include "message.hpp"
 #include "packet.hpp"
-
-#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -25,7 +24,7 @@ element packet::parse()
     else if(message::maybe(*this))
         return message::parse(*this);
 
-    else throw std::invalid_argument("osc::packet::parse(): empty or invalid packet");
+    else throw invalid_packet("bad or empty");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -6,10 +6,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "element.hpp"
+#include "errors.hpp"
 #include "packet.hpp"
 #include "value.hpp"
-
-#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -20,7 +19,7 @@ int32 element::space() const
 {
          if(is_message()) return to_message().space();
     else if(is_bundle ()) return to_bundle ().space();
-         else throw std::invalid_argument("osc::bundle::element::space(): invalid type");
+    else throw invalid_element("bad type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +29,7 @@ void element::append_to(packet& p) const
 
          if(is_message()) to_message().append_to(p);
     else if(is_bundle ()) to_bundle ().append_to(p);
-    else throw std::invalid_argument("operator<<(osc::bundle::element): invalid type");
+    else throw invalid_element("bad type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,12 +46,10 @@ element element::parse(packet& p)
 
     auto e = message::maybe(p) ? element(message::parse(p)) :
         bundle::maybe(p) ? element(bundle::parse(p)) :
-    throw std::invalid_argument("osc::element::parse(osc::packet&): invalid element");
+    throw invalid_packet("neither message nor bundle");
 
     auto pad = size - p.size();
-    if(pad < 0 || pad > 3) throw std::invalid_argument(
-        "osc::element::parse(osc::packet&): invalid packet"
-    );
+    if(pad < 0 || pad > 3) throw invalid_packet("bad size");
     p.data_.erase(p.data_.begin(), p.data_.begin() + pad);
 
     return e;

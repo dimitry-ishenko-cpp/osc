@@ -7,10 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "bundle.hpp"
 #include "elements.hpp"
+#include "errors.hpp"
 #include "packet.hpp"
 #include "value.hpp"
-
-#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -59,9 +58,7 @@ bool bundle::maybe(packet& p)
 bundle bundle::parse(packet& p)
 {
     auto s = value::parse_string(p);
-    if(s != "#bundle") throw std::invalid_argument(
-        "osc::bundle::parse(osc::packet&): missing '#bundle'"
-    );
+    if(s != "#bundle") throw invalid_bundle("missing '#bundle'");
 
     bundle b(value::parse_time(p));
     while(osc::element::maybe(p)) b << osc::element::parse(p);

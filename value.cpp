@@ -5,12 +5,11 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "errors.hpp"
 #include "packet.hpp"
 #include "value.hpp"
 
 #include <algorithm>
-#include <stdexcept>
-
 #include <endian.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +50,7 @@ int32 value::space() const
     else if(is_bool  ()) return space_( to_bool  ());
     else if(is_nil   ()) return space_( to_nil   ());
     else if(is_inf   ()) return space_( to_inf   ());
-    else throw std::invalid_argument("osc::value::space()): invalid type");
+    else throw invalid_value("bad type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +67,7 @@ void value::append_to(packet& pkt) const
     else if(is_bool  ()) append_to(pkt, to_bool  ());
     else if(is_nil   ()) append_to(pkt, to_nil   ());
     else if(is_inf   ()) append_to(pkt, to_inf   ());
-    else throw std::invalid_argument("osc::value::append_to(osc::packet&): invalid type");
+    else throw invalid_value("bad type");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,9 +86,7 @@ void value::append_to(packet& p, float f)
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, string s)
 {
-    if(s.find('\0') != std::string::npos) throw std::invalid_argument(
-        "osc::value::append_to(packet&, string): '\0' inside string"
-    );
+    if(s.find('\0') != std::string::npos) throw invalid_value("string with '\0'");
 
     s.resize(padded(s.size() + 1));
     p.append(s.data(), s.size());
@@ -163,17 +160,14 @@ value value::parse(packet& p, char tag)
     case 'F': return false;
     case 'N': return nil;
     case 'I': return inf;
+    default : throw invalid_value("bad tag");
     }
-
-    throw std::invalid_argument("osc::value::parse(packet&, char): invalid tag");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int32 value::parse_int32(packet& p)
 {
-    if(p.data_.size() < sizeof(int32)) throw std::invalid_argument(
-        "osc::value::parse_int32(osc::packet&): incomplete packet"
-    );
+    if(p.data_.size() < sizeof(int32)) throw invalid_packet("incomplete (int32)");
 
     int32 i = be32toh(*reinterpret_cast<int32*>(p.data_.data()));
     p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int32));
@@ -192,9 +186,7 @@ float value::parse_float(packet& p)
 string value::parse_string(packet& p)
 {
     auto end = std::find(p.data_.begin(), p.data_.end(), '\0');
-    if(end == p.data_.end()) throw std::invalid_argument(
-        "osc::value::parse_string(osc::packet&): missing '\0'"
-    );
+    if(end == p.data_.end()) throw invalid_packet("missing '\0'");
 
     string s(p.data_.begin(), end);
 
@@ -209,9 +201,7 @@ blob value::parse_blob(packet& p)
 {
     auto size = parse_int32(p);
 
-    if(p.size() < size) throw std::invalid_argument(
-        "osc::value::parse_blob(osc::packet&): incomplete packet"
-    );
+    if(p.size() < size) throw invalid_packet("incomplete (blob)");
     auto end = p.data_.begin() + size;
 
     blob b(p.data_.begin(), end);
@@ -225,9 +215,7 @@ blob value::parse_blob(packet& p)
 //////////////////////////////////////////////////if//////////////////////////////
 int64 value::parse_int64(packet& p)
 {
-    if(p.data_.size() < sizeof(int64)) throw std::invalid_argument(
-        "osc::value::parse_int64(osc::packet&): incomplete packet"
-    );
+    if(p.data_.size() < sizeof(int64)) throw invalid_packet("incomplete (int64)");
 
     int64 i = be64toh(*reinterpret_cast<int64*>(p.data_.data()));
     p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int64));
