@@ -69,7 +69,7 @@ public:
     auto const& to_nil   () const { return to<null  >(); }
     auto const& to_inf   () const { return to<inf_t >(); }
 
-    int32 space() const;
+    int32 space() const; // space requirement
 
 private:
     char tag_;
@@ -78,7 +78,7 @@ private:
         int64, time, double, char, bool, null, inf_t
     > value_;
 
-    void append_to(packet&) const;
+    void append_to(packet&) const; // append value to packet
 
     static void append_to(packet&, int32);
     static void append_to(packet&, float);
@@ -96,7 +96,7 @@ private:
     friend class element;
     friend class message;
 
-    static value parse(packet&, char tag);
+    static value parse(packet&, char tag); // parse value from packet
 
     static  int32 parse_int32 (packet&);
     static  float parse_float (packet&);
