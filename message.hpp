@@ -25,9 +25,12 @@ public:
     message(string address);
 
     auto const& address() const { return address_; }
+
     auto const& values() const { return values_; }
+    auto& values() { return values_; }
 
     auto const& value(std::size_t n) const { return values_[n]; }
+    auto& value(std::size_t n) { return values_[n]; }
 
     message& operator<<(osc::value v)
     {
@@ -35,17 +38,17 @@ public:
         return *this;
     }
 
-    int32 space() const;
+    int32 space() const; // space requirement
     packet to_packet() const;
 
-    static bool maybe(packet&);
+    static bool maybe(packet&); // is this packet a message?
     static message parse(packet&);
 
 private:
     string address_;
     osc::values values_;
 
-    void append_to(packet&) const;
+    void append_to(packet&) const; // append message to packet
     friend class element;
 };
 
