@@ -12,26 +12,35 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-void dispatch(const std::vector<entry>& space, const message& m)
+namespace
 {
-    for(auto const& entry : space)
-        if(entry.matches(m.address()))
-            entry.call(m.values());
-}
 
-////////////////////////////////////////////////////////////////////////////////
-void dispatch(const std::vector<entry>& space, const element& e)
+void dispatch_(const address_space& space, const element& e, time t, const call_sched& sched)
 {
     if(e.is_bundle())
     {
         auto b = e.to_bundle();
-        for(auto const& e : b.elements()) dispatch(space, e);
+        for(auto const& e : b.elements()) dispatch_(space, e, b.time(), sched);
     }
     else if(e.is_message())
     {
         auto m = e.to_message();
-        dispatch(space, m);
+
+        for(auto const& e : space)
+            if(e.matches(m.address()))
+            {
+                auto fn = e.bound_callable( m.values() );
+                sched(t, fn);
+            }
     }
+}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void dispatch(const address_space& space, const element& e, const call_sched& sched)
+{
+    dispatch_(space, e, immed, sched);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
