@@ -8,7 +8,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(HEADERS
     bundle.hpp
-    callback.hpp
     dispatch.hpp
     element.hpp
     elements_0.hpp

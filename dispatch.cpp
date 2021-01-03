@@ -25,13 +25,7 @@ void dispatch_(const address_space& space, const element& e, time t, const call_
     else if(e.is_message())
     {
         auto m = e.to_message();
-
-        for(auto const& e : space)
-            if(e.matches(m.address()))
-            {
-                auto fn = e.bound_callable( m.values() );
-                sched(t, fn);
-            }
+        for(auto const& e : space) if(e.matches(m)) sched(t, e.bind(m));
     }
 }
 

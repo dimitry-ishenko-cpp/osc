@@ -9,11 +9,9 @@
 #define OSC_DISPATCH_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "callback.hpp"
 #include "element.hpp"
 #include "message.hpp"
-#include "types.hpp"
-#include "values.hpp"
+#include "types.hpp" // time
 
 #include <functional>
 #include <regex>
@@ -24,19 +22,21 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using bound_callable = std::function<void ()>;
+using callback = std::function<void (const message&)>;
+using bound_callback = std::function<void ()>;
 
 // address space entry
-// NB: the pattern is a regex rather than an OSC globbing rule
 struct entry
 {
-    template<typename Callable>
-    entry(const string& pattern, Callable fn) :
-        re_(pattern), cb_(callback( std::move(fn) ))
+    // NB: the pattern is a regex rather than an OSC globbing rule
+    entry(const string& pattern, callback fn) :
+        re_(pattern), cb_(std::move(fn))
     { }
 
-    bool matches(const string& address) const { return std::regex_match(address, re_); }
-    osc::bound_callable bound_callable(const values& vv) const { return std::bind(cb_, vv); }
+    bool matches(const message& m) const { return std::regex_match(m.address(), re_); }
+
+    void call(const message& m) const { cb_(m); }
+    auto bind(const message& m) const { return std::bind(cb_, m); }
 
 private:
     std::regex re_;
@@ -47,12 +47,12 @@ private:
 using address_space = std::vector<entry>;
 
 // callback scheduler
-using call_sched = std::function<void (time, const bound_callable&)>;
+using call_sched = std::function<void (time, const bound_callback&)>;
 
 // default callback scheduler (ignores time)
 struct default_sched
 {
-    void operator()(time, const bound_callable& fn) const { fn(); }
+    void operator()(time, const bound_callback& cb) const { cb(); }
 };
 
 void dispatch(const address_space&, const element&, const call_sched& = default_sched());
