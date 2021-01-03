@@ -27,15 +27,15 @@ struct callback
     void operator()(const values& vv) const { call_(vv); }
 
 private:
-    // the call function
-    using call = std::function<void (const values&)>;
-    call call_;
-
     // callable wrapped inside std::function
     template<typename... Args>
     using callable = std::function<void (Args...)>;
 
-    // turn callable into call
+    // the call function, which invokes the callable
+    using call = std::function<void (const values&)>;
+    call call_;
+
+    // helper to convert callable into call at compile-time
     template<typename... Args, std::size_t... Is>
     static call to_call_(callable<Args...> fn, std::index_sequence<Is...>)
     {
