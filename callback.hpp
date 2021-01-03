@@ -77,6 +77,13 @@ private:
     struct adaptor<C, std::void_t<decltype( &C::operator() )>> :
         public adaptor<decltype( &C::operator() )>
     { };
+
+    // specialization for callables accepting values
+    template<typename U>
+    struct adaptor<callable<const values&>, U>
+    {
+        static auto to_call(callable<const values&> fn) { return std::move(fn); }
+    };
 };
 
 ////////////////////////////////////////////////////////////////////////////////
