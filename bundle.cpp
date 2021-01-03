@@ -16,7 +16,7 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-inline bundle& bundle::operator<<(osc::element e)
+bundle& bundle::operator<<(osc::element e)
 {
     elements_.push_back(std::move(e));
     return *this;
