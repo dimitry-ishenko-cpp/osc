@@ -1,0 +1,51 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2020 Dimitry Ishenko
+// Contact: dimitry (dot) ishenko (at) (gee) mail (dot) com
+//
+// Distributed under the GNU GPL license. See the LICENSE.md file for details.
+
+////////////////////////////////////////////////////////////////////////////////
+#ifndef OSC_DISPATCH_HPP
+#define OSC_DISPATCH_HPP
+
+////////////////////////////////////////////////////////////////////////////////
+#include "callback.hpp"
+#include "element.hpp"
+#include "message.hpp"
+#include "types.hpp"
+#include "values.hpp"
+
+#include <regex>
+#include <vector>
+
+////////////////////////////////////////////////////////////////////////////////
+namespace osc
+{
+
+////////////////////////////////////////////////////////////////////////////////
+// address space entry
+// NB: the pattern is a regex rather than an OSC globbing rule
+struct entry
+{
+    template<typename Callable>
+    entry(const string& pattern, Callable fn) :
+        re_(pattern), cb_(callback( std::move(fn) ))
+    { }
+
+    bool matches(const string& address) const { return std::regex_match(address, re_); }
+    void call(const values& vv) const { cb_(vv); }
+
+private:
+    std::regex re_;
+    callback cb_;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+void dispatch(const std::vector<entry>&, const message&);
+void dispatch(const std::vector<entry>&, const element&);
+
+////////////////////////////////////////////////////////////////////////////////
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#endif

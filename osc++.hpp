@@ -10,6 +10,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include <osc++/bundle.hpp>
+#include <osc++/callback.hpp>
+#include <osc++/dispatch.hpp>
 #include <osc++/element.hpp>
 #include <osc++/elements.hpp>
 #include <osc++/errors.hpp>

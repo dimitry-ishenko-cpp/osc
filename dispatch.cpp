@@ -1,0 +1,38 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2020 Dimitry Ishenko
+// Contact: dimitry (dot) ishenko (at) (gee) mail (dot) com
+//
+// Distributed under the GNU GPL license. See the LICENSE.md file for details.
+
+////////////////////////////////////////////////////////////////////////////////
+#include "dispatch.hpp"
+
+////////////////////////////////////////////////////////////////////////////////
+namespace osc
+{
+
+////////////////////////////////////////////////////////////////////////////////
+void dispatch(const std::vector<entry>& space, const message& m)
+{
+    for(auto const& entry : space)
+        if(entry.matches(m.address()))
+            entry.call(m.values());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void dispatch(const std::vector<entry>& space, const element& e)
+{
+    if(e.is_bundle())
+    {
+        auto b = e.to_bundle();
+        for(auto const& e : b.elements()) dispatch(space, e);
+    }
+    else if(e.is_message())
+    {
+        auto m = e.to_message();
+        dispatch(space, m);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+}

@@ -9,6 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(HEADERS
     bundle.hpp
     callback.hpp
+    dispatch.hpp
     element.hpp
     elements_0.hpp
     elements.hpp
@@ -23,6 +24,7 @@ set(OVERALL_HEADER osc++.hpp)
 
 set(SOURCES
     bundle.cpp
+    dispatch.cpp
     element.cpp
     message.cpp
     packet.cpp
