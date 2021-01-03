@@ -17,39 +17,19 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-namespace
-{
-
-int32 padded(int32 x) { return ((x + 3) / 4) * 4; }
-
-int32 space_(int32 ) { return sizeof(int32 ); }
-int32 space_(float ) { return sizeof(float ); }
-int32 space_(const string& s) { return padded(s.size() + 1); }
-int32 space_(const blob& b) { return space_(int32{}) + padded(b.size()); }
-int32 space_(int64 ) { return sizeof(int64 ); }
-int32 space_(time  ) { return sizeof(int64 ); } // sent as int64
-int32 space_(double) { return sizeof(double); }
-int32 space_(char  ) { return sizeof(int32 ); } // sent as int32
-int32 space_(bool  ) { return 0; }
-int32 space_(null  ) { return 0; }
-int32 space_(inf_t ) { return 0; }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
 int32 value::space() const
 {
-         if(is_int32 ()) return space_( to_int32 ());
-    else if(is_float ()) return space_( to_float ());
-    else if(is_string()) return space_( to_string());
-    else if(is_blob  ()) return space_( to_blob  ());
-    else if(is_int64 ()) return space_( to_int64 ());
-    else if(is_time  ()) return space_( to_time  ());
-    else if(is_double()) return space_( to_double());
-    else if(is_char  ()) return space_( to_char  ());
-    else if(is_bool  ()) return space_( to_bool  ());
-    else if(is_nil   ()) return space_( to_nil   ());
-    else if(is_inf   ()) return space_( to_inf   ());
+         if(is_int32 ()) return space(to_int32 ());
+    else if(is_float ()) return space(to_float ());
+    else if(is_string()) return space(to_string());
+    else if(is_blob  ()) return space(to_blob  ());
+    else if(is_int64 ()) return space(to_int64 ());
+    else if(is_time  ()) return space(to_time  ());
+    else if(is_double()) return space(to_double());
+    else if(is_char  ()) return space(to_char  ());
+    else if(is_bool  ()) return space(to_bool  ());
+    else if(is_nil   ()) return space(to_nil   ());
+    else if(is_inf   ()) return space(to_inf   ());
     else throw invalid_value("bad type");
 }
 

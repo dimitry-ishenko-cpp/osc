@@ -80,6 +80,21 @@ private:
 
     void append_to(packet&) const; // append value to packet
 
+    ////////////////////
+    static int32 padded(int32 x) { return ((x + 3) / 4) * 4; }
+
+    static int32 space(int32 ) { return sizeof(int32 ); }
+    static int32 space(float ) { return sizeof(float ); }
+    static int32 space(const string& s) { return padded(s.size() + 1); }
+    static int32 space(const blob& b) { return space(int32{}) + padded(b.size()); }
+    static int32 space(int64 ) { return sizeof(int64 ); }
+    static int32 space(time  ) { return sizeof(int64 ); } // sent as int64
+    static int32 space(double) { return sizeof(double); }
+    static int32 space(char  ) { return sizeof(int32 ); } // sent as int32
+    static int32 space(bool  ) { return 0; }
+    static int32 space(null  ) { return 0; }
+    static int32 space(inf_t ) { return 0; }
+
     static void append_to(packet&, int32);
     static void append_to(packet&, float);
     static void append_to(packet&, string);
