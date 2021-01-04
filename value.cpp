@@ -212,15 +212,14 @@ time value::parse_time(packet& p)
     using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
 
     time t; // epoch
-
-    // "shift" epoch from 1/1/1900 (osc) to 1/1/1970 (unix)
-    // which is 70 years + 17 leap days
-    // ref: https://stackoverflow.com/a/65149566/4358570
-    t -= (70 * 365 + 17) * 24h;
-
     if(auto i = parse_int64(p); i != 1)
     {
-        t += seconds(i >> 32);
+        // "shift" epoch from 1/1/1900 (osc) to 1/1/1970 (unix)
+        // which is 70 years + 17 leap days
+        // ref: https://stackoverflow.com/a/65149566/4358570
+        t -= (70 * 365 + 17) * 24h;
+
+        t += seconds((i >> 32) & 0xffffffff);
         t += duration_cast<clock::duration>( fractions(i & 0xffffffff) );
     }
     else t = immed;
