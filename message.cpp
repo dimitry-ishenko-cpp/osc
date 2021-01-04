@@ -23,7 +23,12 @@ message::message(string s) : address_(std::move(s))
 int32 message::space() const
 {
     int32 total = 0;
+
+    total += value::space(address());
+    total += value::space(tags());
+
     for(auto const& val : values()) total += val.space();
+
     return total;
 }
 
@@ -34,18 +39,6 @@ packet message::to_packet() const
     append_to(p);
 
     return p;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void message::append_to(packet& p) const
-{
-    osc::value::append_to(p, address());
-
-    string tags = ",";
-    for(auto const& v : values()) tags += v.tag();
-    osc::value::append_to(p, tags);
-
-    for(auto const& v : values()) v.append_to(p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,6 +59,23 @@ message message::parse(packet& p)
 
     for(auto t : tags) m << osc::value::parse(p, t);
     return m;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void message::append_to(packet& p) const
+{
+    osc::value::append_to(p, address());
+    osc::value::append_to(p, tags());
+
+    for(auto const& v : values()) v.append_to(p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+string message::tags() const
+{
+    string tags = ",";
+    for(auto const& v : values()) tags += v.tag();
+    return tags;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

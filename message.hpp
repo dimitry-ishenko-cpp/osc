@@ -48,6 +48,8 @@ private:
     string address_;
     osc::values values_;
 
+    string tags() const;
+
     void append_to(packet&) const; // append message to packet
     friend class element;
 };
