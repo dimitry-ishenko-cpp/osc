@@ -26,7 +26,12 @@ bundle& bundle::operator<<(osc::element e)
 int32 bundle::space() const
 {
     int32 total = 0;
+
+    total += value::space(string("#bundle"));
+    total += value::space(time());
+
     for(auto const& e : elements()) total += e.space();
+    
     return total;
 }
 
