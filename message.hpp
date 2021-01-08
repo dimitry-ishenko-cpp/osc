@@ -35,7 +35,17 @@ public:
     message& operator<<(osc::value v)
     {
         values_.push_back(std::move(v));
-        return *this;
+        return (*this);
+    }
+
+    template<typename T>
+    message& operator>>(T& x)
+    {
+        auto v{ std::move(values_.front()) };
+        values_.pop_front();
+
+        x = std::move(v.to<T>());
+        return (*this);
     }
 
     int32 space() const; // space requirement
