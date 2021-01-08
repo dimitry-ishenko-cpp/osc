@@ -23,6 +23,26 @@ bundle& bundle::operator<<(osc::element e)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bundle& bundle::operator>>(message& m)
+{
+    auto e{ std::move(elements_.front()) };
+    elements_.pop_front();
+
+    m = std::move(e.to_message());
+    return (*this);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bundle& bundle::operator>>(bundle& b)
+{
+    auto e{ std::move(elements_.front()) };
+    elements_.pop_front();
+
+    b = std::move(e.to_bundle());
+    return (*this);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int32 bundle::space() const
 {
     int32 total = 0;
@@ -31,7 +51,7 @@ int32 bundle::space() const
     total += value::space(time());
 
     for(auto const& e : elements()) total += e.space();
-    
+
     return total;
 }
 

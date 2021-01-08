@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
 #include "elements_0.hpp"
+#include "message.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -33,6 +34,9 @@ public:
     auto& element(std::size_t n) { return elements_[n]; }
 
     bundle& operator<<(osc::element);
+
+    bundle& operator>>(message&);
+    bundle& operator>>(bundle&);
 
     int32 space() const; // space requirement
     packet to_packet() const;
