@@ -12,17 +12,17 @@
 #include "types.hpp"
 #include "value.hpp"
 
-#include <vector>
+#include <deque>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-class values : public std::vector<value>
+class values : public std::deque<value>
 {
 public:
-    using std::vector<value>::vector;
+    using std::deque<value>::deque;
 
     template<typename... Ts>
     bool are() const
