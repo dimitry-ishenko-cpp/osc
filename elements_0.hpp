@@ -10,7 +10,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
-#include <vector>
+#include <deque>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -19,10 +19,10 @@ namespace osc
 class element;
 
 ////////////////////////////////////////////////////////////////////////////////
-class elements : public std::vector<element>
+class elements : public std::deque<element>
 {
 public:
-    using std::vector<element>::vector;
+    using std::deque<element>::deque;
 
     template<typename... Ts> bool are() const;
 
