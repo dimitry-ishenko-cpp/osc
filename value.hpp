@@ -83,6 +83,7 @@ private:
     ////////////////////
     static int32 padded(int32 x) { return ((x + 3) / 4) * 4; }
 
+    // space requirement
     static int32 space(int32 ) { return sizeof(int32 ); }
     static int32 space(float ) { return sizeof(float ); }
     static int32 space(const string& s) { return padded(s.size() + 1); }
