@@ -62,13 +62,6 @@ $ make
 $ sudo make install
 ```
 
-## Developing with libosc++
-
-Usage examples:
-```cpp
-...
-```
-
 ## Authors
 
 * **Dimitry Ishenko** - dimitry (dot) ishenko (at) (gee) mail (dot) com
