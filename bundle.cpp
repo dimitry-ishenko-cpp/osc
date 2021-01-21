@@ -83,9 +83,9 @@ bool bundle::maybe(packet& p)
 bundle bundle::parse(packet& p)
 {
     auto s = value::parse_string(p);
-    if(s != "#bundle") throw invalid_bundle("missing '#bundle'");
+    if(s != "#bundle") throw invalid_bundle{ "missing '#bundle'" };
 
-    bundle b(value::parse_time(p));
+    bundle b{ value::parse_time(p) };
     while(osc::element::maybe(p)) b << osc::element::parse(p);
 
     return b;
