@@ -24,7 +24,7 @@ element packet::parse()
     else if(message::maybe(*this))
         return message::parse(*this);
 
-    else throw invalid_packet("bad or empty");
+    else throw invalid_packet{ "bad or empty" };
 }
 
 ////////////////////////////////////////////////////////////////////////////////

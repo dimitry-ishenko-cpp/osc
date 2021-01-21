@@ -25,8 +25,8 @@ class packet
 public:
     packet() = default;
     explicit packet(int32 size) : data_(size) { }
-    packet(const char* data, int32 size) : packet(data, data + size) { }
-    packet(const char* begin, const char* end) : data_(begin, end) { }
+    packet(const char* data, int32 size) : packet{ data, data + size } { }
+    packet(const char* begin, const char* end) : data_{ begin, end } { }
 
     const char* data() const { return data_.data(); }
     char* data() { return data_.data(); }
