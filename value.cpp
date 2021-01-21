@@ -30,7 +30,7 @@ int32 value::space() const
     else if(is_bool  ()) return space(to_bool  ());
     else if(is_nil   ()) return space(to_nil   ());
     else if(is_inf   ()) return space(to_inf   ());
-    else throw invalid_value("bad type");
+    else throw invalid_value{ "bad type" };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ void value::append_to(packet& pkt) const
     else if(is_bool  ()) append_to(pkt, to_bool  ());
     else if(is_nil   ()) append_to(pkt, to_nil   ());
     else if(is_inf   ()) append_to(pkt, to_inf   ());
-    else throw invalid_value("bad type");
+    else throw invalid_value{ "bad type" };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ void value::append_to(packet& p, float f)
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, string s)
 {
-    if(s.find('\0') != std::string::npos) throw invalid_value("string with '\0'");
+    if(s.find('\0') != std::string::npos) throw invalid_value{ "string with '\0'" };
 
     s.resize(padded(s.size() + 1));
     p.append(s.data(), s.size());
@@ -102,9 +102,9 @@ void value::append_to(packet& p, time t)
         // ref: https://stackoverflow.com/a/65149566/4358570
         t += (70 * 365 + 17) * 24h;
 
-        auto total = t.time_since_epoch();
-        auto sec = duration_cast<seconds>(total);
-        auto frac = duration_cast<fractions>(total - sec);
+        auto total{ t.time_since_epoch() };
+        auto sec  { duration_cast<seconds>(total) };
+        auto frac { duration_cast<fractions>(total - sec) };
 
         append_to(p, static_cast<int64>((sec.count() << 32) | frac.count()));
     }
@@ -140,14 +140,14 @@ value value::parse(packet& p, char tag)
     case 'F': return false;
     case 'N': return nil;
     case 'I': return inf;
-    default : throw invalid_value("bad tag");
+    default : throw invalid_value{ "bad tag" };
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int32 value::parse_int32(packet& p)
 {
-    if(p.data_.size() < sizeof(int32)) throw invalid_packet("incomplete (int32)");
+    if(p.data_.size() < sizeof(int32)) throw invalid_packet{ "incomplete (int32)" };
 
     int32 i = be32toh(*reinterpret_cast<int32*>(p.data_.data()));
     p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int32));
@@ -165,10 +165,10 @@ float value::parse_float(packet& p)
 ////////////////////////////////////////////////////////////////////////////////
 string value::parse_string(packet& p)
 {
-    auto end = std::find(p.data_.begin(), p.data_.end(), '\0');
-    if(end == p.data_.end()) throw invalid_packet("missing '\0'");
+    auto end{ std::find(p.data_.begin(), p.data_.end(), '\0') };
+    if(end == p.data_.end()) throw invalid_packet{ "missing '\0'" };
 
-    string s(p.data_.begin(), end);
+    string s{ p.data_.begin(), end };
 
     end = p.data_.begin() + padded(end - p.data_.begin() + 1);
     p.data_.erase(p.data_.begin(), end);
@@ -181,10 +181,10 @@ blob value::parse_blob(packet& p)
 {
     auto size = parse_int32(p);
 
-    if(p.size() < size) throw invalid_packet("incomplete (blob)");
-    auto end = p.data_.begin() + size;
+    if(p.size() < size) throw invalid_packet{ "incomplete (blob)" };
+    auto end{ p.data_.begin() + size };
 
-    blob b(p.data_.begin(), end);
+    blob b{ p.data_.begin(), end };
 
     end = p.data_.begin() + padded(end - p.data_.begin());
     p.data_.erase(p.data_.begin(), end);
@@ -195,7 +195,7 @@ blob value::parse_blob(packet& p)
 //////////////////////////////////////////////////if//////////////////////////////
 int64 value::parse_int64(packet& p)
 {
-    if(p.data_.size() < sizeof(int64)) throw invalid_packet("incomplete (int64)");
+    if(p.data_.size() < sizeof(int64)) throw invalid_packet{ "incomplete (int64)" };
 
     int64 i = be64toh(*reinterpret_cast<int64*>(p.data_.data()));
     p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int64));
@@ -219,8 +219,8 @@ time value::parse_time(packet& p)
         // ref: https://stackoverflow.com/a/65149566/4358570
         t -= (70 * 365 + 17) * 24h;
 
-        t += seconds((i >> 32) & 0xffffffff);
-        t += duration_cast<clock::duration>( fractions(i & 0xffffffff) );
+        t += seconds{ (i >> 32) & 0xffffffff };
+        t += duration_cast<clock::duration>(fractions{ i & 0xffffffff });
     }
     else t = immed;
 

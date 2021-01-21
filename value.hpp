@@ -22,18 +22,18 @@ class packet;
 class value
 {
 public:
-    value(int32  i) : tag_('i'), value_(i) { }
-    value(float  f) : tag_('f'), value_(f) { }
-    value(string s) : tag_('s'), value_(std::move(s)) { }
-    value(const char* s) : value(string(s)) { }
-    value(blob   b) : tag_('b'), value_(std::move(b)) { }
-    value(int64  i) : tag_('h'), value_(i) { }
-    value(time   t) : tag_('t'), value_(t) { }
-    value(double d) : tag_('d'), value_(d) { }
-    value(char   c) : tag_('c'), value_(c) { }
-    value(bool   b) : tag_(b ? 'T' : 'F'), value_(b) { }
-    value(null   n) : tag_('N'), value_(n) { }
-    value(inf_t  i) : tag_('I'), value_(i) { }
+    value(int32  i) : tag_{ 'i' }, value_{ i } { }
+    value(float  f) : tag_{ 'f' }, value_{ f } { }
+    value(string s) : tag_{ 's' }, value_{ std::move(s) } { }
+    value(const char* s) : value{ string { s } } { }
+    value(blob   b) : tag_{ 'b' }, value_{ std::move(b) } { }
+    value(int64  i) : tag_{ 'h' }, value_{ i } { }
+    value(time   t) : tag_{ 't' }, value_{ t } { }
+    value(double d) : tag_{ 'd' }, value_{ d } { }
+    value(char   c) : tag_{ 'c' }, value_{ c } { }
+    value(bool   b) : tag_{ b ? 'T' : 'F' }, value_ { b } { }
+    value(null   n) : tag_{ 'N' }, value_{ n } { }
+    value(inf_t  i) : tag_{ 'I' }, value_{ i } { }
 
     auto tag() const { return tag_; }
 
