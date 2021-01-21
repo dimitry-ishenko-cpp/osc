@@ -28,7 +28,7 @@ using int64   = std::int64_t;
 using time    = clock::time_point;
 using null    = std::nullptr_t;
 
-struct inf_t { explicit inf_t() = default; };
+struct inf_t { constexpr explicit inf_t() = default; };
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace literals
