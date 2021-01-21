@@ -26,8 +26,8 @@ class packet;
 class element
 {
 public:
-    element(message m) : element_(std::move(m)) { }
-    element(bundle  b) : element_(std::move(b)) { }
+    element(message m) : element_{ std::move(m) } { }
+    element(bundle  b) : element_{ std::move(b) } { }
 
     template<typename T>
     bool is() const { return std::holds_alternative<T>(element_); }
