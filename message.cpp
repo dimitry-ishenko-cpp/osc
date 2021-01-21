@@ -14,9 +14,9 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-message::message(string s) : address_(std::move(s))
+message::message(string s) : address_{ std::move(s) }
 {
-    if(address_.size() < 1 || address_[0] != '/') throw invalid_message("bad address");
+    if(address_.size() < 1 || address_[0] != '/') throw invalid_message{ "bad address" };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,10 +51,10 @@ bool message::maybe(packet& p)
 message message::parse(packet& p)
 {
     auto address = osc::value::parse_string(p);
-    message m(address);
+    message m{ address };
 
     auto tags = osc::value::parse_string(p);
-    if(tags.size() < 1 || tags[0] != ',') throw invalid_packet("missing ','");
+    if(tags.size() < 1 || tags[0] != ',') throw invalid_packet{ "missing ','" };
     tags.erase(0, 1);
 
     for(auto t : tags) m << osc::value::parse(p, t);
