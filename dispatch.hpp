@@ -30,7 +30,7 @@ struct entry
 {
     // NB: the pattern is a regex rather than an OSC globbing rule
     entry(const string& pattern, callback fn) :
-        re_(pattern), cb_(std::move(fn))
+        re_{ pattern }, cb_{ std::move(fn) }
     { }
 
     bool matches(const message& m) const { return std::regex_match(m.address(), re_); }
