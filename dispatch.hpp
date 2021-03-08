@@ -47,15 +47,15 @@ private:
 using address_space = std::vector<entry>;
 
 // callback scheduler
-using call_sched = std::function<void (time, const bound_callback&)>;
+using callback_sched = std::function<void (time, const bound_callback&)>;
 
-// default callback scheduler (ignores time)
-struct default_sched
+// immediate callback scheduler (ignores time)
+struct call_immed
 {
     void operator()(time, const bound_callback& cb) const { cb(); }
 };
 
-void dispatch(const address_space&, const element&, const call_sched& = default_sched());
+void dispatch(const address_space&, const element&, const callback_sched& = call_immed{ });
 
 ////////////////////////////////////////////////////////////////////////////////
 }
