@@ -13,6 +13,7 @@
 #include "message.hpp"
 #include "types.hpp" // time
 
+#include <cstddef> // std::size_t
 #include <functional>
 #include <regex>
 #include <vector>
@@ -45,7 +46,7 @@ public:
     // NB: the pattern is a regex, which differs from the OSC spec
     void add(const std::string& pattern, callback);
 
-    void dispatch(const element& e) { dispatch(e, immed); }
+    std::size_t dispatch(const element& e) { return dispatch(0, e, immed); }
 
 private:
     callback_sched sched_;
@@ -56,7 +57,7 @@ private:
     };
     std::vector<entry> entries_;
 
-    void dispatch(const element&, time);
+    std::size_t dispatch(std::size_t n, const element&, time);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
