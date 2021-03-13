@@ -12,29 +12,28 @@ namespace osc
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-namespace
+void address_space::add(const std::string& pattern, callback cb)
 {
+    entries_.push_back(entry{ std::regex{ pattern }, std::move(cb) });
+}
 
-void dispatch_(const address_space& space, const element& e, time t, const callback_sched& sched)
+////////////////////////////////////////////////////////////////////////////////
+void address_space::dispatch(const element& e, time t)
 {
     if(e.is_bundle())
     {
         auto b = e.to_bundle();
-        for(auto const& el : b.elements()) dispatch_(space, el, b.time(), sched);
+        for(auto const& el : b.elements()) dispatch(el, b.time());
     }
     else if(e.is_message())
     {
         auto m = e.to_message();
-        for(auto const& en : space) if(en.matches(m)) sched(t, en.bind(m));
+        for(auto const& en : entries_)
+        {
+            auto match = std::regex_match(m.address(), en.re);
+            if(match) sched_(t, std::bind(en.cb, m));
+        }
     }
-}
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void dispatch(const address_space& space, const element& e, const callback_sched& sched)
-{
-    dispatch_(space, e, immed, sched);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
