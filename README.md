@@ -13,16 +13,14 @@ See the [Usage](#usage) section below if you are planning to develop application
 Debian/Ubuntu/etc:
 
 ```shell
-$ p=libosc++
-$ v=1.0
+$ p=libosc++ v=1.0
 $ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}_${v}_amd64.deb
 $ sudo apt install ./${p}_${v}_amd64.deb
 ```
 
 Install the development package, if you are planning to develop applications with **libosc++**:
 ```shell
-$ p=libosc++-dev
-$ v=1.0
+$ p=libosc++-dev v=1.0
 $ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}_${v}_amd64.deb
 $ sudo apt install ./${p}_${v}_amd64.deb
 ```
@@ -30,16 +28,14 @@ $ sudo apt install ./${p}_${v}_amd64.deb
 RaspberryPi:
 
 ```shell
-$ p=libosc++
-$ v=1.0
+$ p=libosc++ v=1.0
 $ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}_${v}_armhf.deb
 $ sudo apt install ./${p}_${v}_armhf.deb
 ```
 
 Install the development package, if you are planning to develop applications with **libosc++**:
 ```shell
-$ p=libosc++-dev
-$ v=1.0
+$ p=libosc++-dev v=1.0
 $ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}_${v}_armhf.deb
 $ sudo apt install ./${p}_${v}_armhf.deb
 ```
@@ -49,9 +45,8 @@ $ sudo apt install ./${p}_${v}_armhf.deb
 Stable version (requires [CMake](https://cmake.org/) >= 3.1):
 
 ```shell
-$ p=liboscpp
-$ v=1.0
-$ wget https://github.com/dimitry-ishenko-cpp/${p}/archive/v${v}.tar.gz
+$ p=libosc++ v=1.0
+$ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}-${v}.tar.bz2
 $ tar xzf v${v}.tar.gz
 $ mkdir ${p}-${v}/build
 $ cd ${p}-${v}/build
