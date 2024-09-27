@@ -7,27 +7,27 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(HEADERS
-    bundle.hpp
-    dispatch.hpp
-    element.hpp
-    elements_0.hpp
-    elements.hpp
-    errors.hpp
-    message.hpp
-    packet.hpp
-    types.hpp
-    value.hpp
-    values.hpp
+    src/bundle.hpp
+    src/dispatch.hpp
+    src/element.hpp
+    src/elements_0.hpp
+    src/elements.hpp
+    src/errors.hpp
+    src/message.hpp
+    src/packet.hpp
+    src/types.hpp
+    src/value.hpp
+    src/values.hpp
 )
-set(OVERALL_HEADER osc++.hpp)
+set(OVERALL_HEADER src/osc++.hpp)
 
 set(SOURCES
-    bundle.cpp
-    dispatch.cpp
-    element.cpp
-    message.cpp
-    packet.cpp
-    value.cpp
+    src/bundle.cpp
+    src/dispatch.cpp
+    src/element.cpp
+    src/message.cpp
+    src/packet.cpp
+    src/value.cpp
 )
 
 include(GNUInstallDirs)
