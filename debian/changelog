@@ -1,5 +1,12 @@
-libosc++ (1.1) UNRELEASED; urgency=medium
+libosc++ (1.1) unstable; urgency=medium
 
-  * Initial release
+  * Update README
+  * Use C++20
+  * Add Debian packaging
+  * Update CMake file
+  * Remove CPack targets
+  * Move source files into src
+  * Prep for v1.1
+  * README.md: update URLs... again
 
- -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Tue, 09 Nov 2021 20:45:06 -0500
+ -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Sat, 28 Sep 2024 13:35:37 -0400
