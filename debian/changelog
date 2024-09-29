@@ -1,3 +1,10 @@
+libosc++ (1.3) unstable; urgency=medium
+
+  * Prep for v1.3
+  * errors: add missing include guard
+
+ -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Sat, 28 Sep 2024 21:11:06 -0400
+
 libosc++ (1.2) unstable; urgency=medium
 
   * Prep for v1.2
