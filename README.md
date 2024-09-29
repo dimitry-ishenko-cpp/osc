@@ -39,7 +39,7 @@ $ sudo apt install libosc++-dev
 Stable version (requires [CMake](https://cmake.org/) >= 3.16):
 
 ```shell
-$ p=libosc++ v=1.1
+$ p=libosc++ v=1.2
 $ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}-${v}.tar.bz2
 $ tar xzf v${v}.tar.gz
 $ mkdir ${p}-${v}/build
