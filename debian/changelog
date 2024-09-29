@@ -1,3 +1,11 @@
+libosc++ (1.2) unstable; urgency=medium
+
+  * Prep for v1.2
+  * Rely on individual guards
+  * README: update links
+
+ -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Sat, 28 Sep 2024 20:32:35 -0400
+
 libosc++ (1.1) unstable; urgency=medium
 
   * Update README
