@@ -1,10 +1,10 @@
-# libosc++ – an OSC Library for C++
+# osc++ – an OSC Library for C++
 
-The **libosc++** library allows one to easily create and parse [OSC (Open Sound Control)](https://opensoundcontrol.org) packets.
+The **osc++** library allows one to easily create and parse [OSC (Open Sound Control)](https://opensoundcontrol.org) packets.
 
 OSC is an open, transport-independent, message-based protocol developed for communication between computers and other multimedia devices.
 
-See the [Usage](#usage) section below if you are planning to develop applications with **libosc++**.
+See the [Usage](#usage) section below if you are planning to develop applications with **osc++**.
 
 ## Installation
 
@@ -17,7 +17,7 @@ $ sudo add-apt-repository ppa:ppa-verse/casparcg
 $ sudo apt install libosc++
 ```
 
-Install the development package, if you are planning to develop applications with **libosc++**:
+Install the development package, if you are planning to develop applications with **osc++**:
 ```shell
 $ sudo apt install libosc++-dev
 ```
@@ -29,7 +29,7 @@ sudo add-apt-repository -S deb https://ppa.launchpadcontent.net/ppa-verse/caspar
 $ sudo apt install libosc++
 ```
 
-Install the development package, if you are planning to develop applications with **libosc++**:
+Install the development package, if you are planning to develop applications with **osc++**:
 ```shell
 $ sudo apt install libosc++-dev
 ```
@@ -39,8 +39,8 @@ $ sudo apt install libosc++-dev
 Stable version (requires [CMake](https://cmake.org/) >= 3.16):
 
 ```shell
-$ p=libosc++ v=1.3
-$ wget https://github.com/dimitry-ishenko-cpp/liboscpp/releases/download/v${v}/${p}-${v}.tar.bz2
+$ p=osc v=1.3
+$ wget https://github.com/dimitry-ishenko-cpp/${p}/archive/v${v}.tar.gz
 $ tar xzf v${v}.tar.gz
 $ mkdir ${p}-${v}/build
 $ cd ${p}-${v}/build
@@ -52,7 +52,7 @@ $ sudo make install
 Latest master (requires [git](https://git-scm.com/) and [CMake](https://cmake.org/) >= 3.16):
 
 ```shell
-$ p=liboscpp
+$ p=osc
 $ git clone --recursive https://github.com/dimitry-ishenko-cpp/${p}.git
 $ mkdir ${p}/build
 $ cd ${p}/build
@@ -63,7 +63,7 @@ $ sudo make install
 
 ## Usage
 
-To use **libosc++** in your application simply add:
+To use **osc++** in your application simply add:
 
 ```c++
 #include <osc++.hpp>
@@ -73,26 +73,26 @@ to your file(s) and link with `-losc++`.
 
 ## Description
 
-**libosc++** supports all standard OSC data types and most of the non-standard (extended) ones. The following table summarizes which types are supported:
+**osc++** supports all standard OSC data types and most of the non-standard (extended) ones. The following table summarizes which types are supported:
 
  OSC type | Implemented as
 :--------:|:--------------:
-[`int32`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)   | `std::int32_t`
-[`float32`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp) | `float`
-[`string`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)  | `std::string`
-[`blob`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)    | `std::vector<char>`
-[`int64`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)   | `std::int64_t`
-[`time`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)    | `clock::time_point`<sup>1</sup>
+[`int32`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)   | `std::int32_t`
+[`float32`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp) | `float`
+[`string`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)  | `std::string`
+[`blob`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)    | `std::vector<char>`
+[`int64`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)   | `std::int64_t`
+[`time`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)    | `clock::time_point`<sup>1</sup>
 `double`  | `double`
 `char`    | `char`
 `true`    | `bool`
 `false`   | `bool`
-[`nil`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)     | `std::nullptr_t`
-[`inf`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp)     | `inf_t`
+[`nil`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)     | `std::nullptr_t`
+[`inf`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)     | `inf_t`
 
 <sup>1</sup> `using clock = std::chrono::system_clock`.
 
-All supported data types are encapsulated in the [`osc::value`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/value.hpp) variant class.
+All supported data types are encapsulated in the [`osc::value`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/value.hpp) variant class.
 
 `osc::value` can be implicitly instantiated from any of the supported types, and has `is_...()` and `to_...()` series of functions to query and extract stored value. For example:
 
@@ -112,18 +112,18 @@ OSC data is transmitted in packets. An application transmitting the packets is c
 
 An OSC packet is either an _OSC message_ or an _OSC bundle_.
 
-Within the library packets are represented by the [`osc::packet`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp) class, which is a storage container (not entirely unlike `std::vector`) and provides the following functions:
+Within the library packets are represented by the [`osc::packet`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp) class, which is a storage container (not entirely unlike `std::vector`) and provides the following functions:
 
  Function | Description
 :--------:|:-----------
-[`packet{ }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp)            | Construct empty packet.
-[`packet{ size }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp)       | Construct packet of `size` bytes.
-[`packet{ data, size }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp) | Construct packet and copy `size` bytes from `data`.
-[`packet{ begin, end }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp) | Construct packet and copy data from `[begin, end)`.
-[`data()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp)               | Access packet data.
-[`size()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp)               | Get packet size.
-[`resize(size)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp)         | Resize packet.
-[`clear()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/packet.hpp)              | Discard packet data and resize to 0 bytes.
+[`packet{ }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)            | Construct empty packet.
+[`packet{ size }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)       | Construct packet of `size` bytes.
+[`packet{ data, size }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp) | Construct packet and copy `size` bytes from `data`.
+[`packet{ begin, end }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp) | Construct packet and copy data from `[begin, end)`.
+[`data()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)               | Access packet data.
+[`size()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)               | Get packet size.
+[`resize(size)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)         | Resize packet.
+[`clear()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)              | Discard packet data and resize to 0 bytes.
 
 Example of sending a packet using the [asio](https://think-async.com/) library:
 
@@ -150,7 +150,7 @@ socket.async_wait(asio::ip::udp::socket::wait_read, [=](const asio::error_code& 
 });
 ```
 
-As mentioned earlier, a packet is either a message or a bundle. Data stored in the packet can be extracted with the `parse()` function, which returns an instance of [`osc::element`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/element.hpp).
+As mentioned earlier, a packet is either a message or a bundle. Data stored in the packet can be extracted with the `parse()` function, which returns an instance of [`osc::element`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/element.hpp).
 
 `osc::element` is a variant class encapsulating `osc::message` and `osc::bundle`, and has `is_message()`/`is_bundle()` and `to_message()`/`to_bundle()` functions to query and extract stored data. For example:
 
@@ -170,7 +170,7 @@ else if(element.is_message())
 
 ## OSC Message
 
-OSC message -- represented by the [`osc::message`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp) class --  consists of an address pattern followed by zero or more arguments, which are instances of `osc::value`.
+OSC message -- represented by the [`osc::message`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp) class --  consists of an address pattern followed by zero or more arguments, which are instances of `osc::value`.
 
 The address pattern starts with `/` (forward slash) and contains one or more nodes separated by `/`. The pattern can be thought of as a path in a tree-like structure with intermediate nodes called _OSC containers_ and leaf nodes called _OSC methods_.
 
@@ -180,13 +180,13 @@ As such, OSC message can be considered to be a request to execute given method w
 
  Function | Description
 :--------:|:-----------
-[`message{ address }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp) | Construct message with `address`.
-[`address()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp)          | Get message address.
-[`values()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp)           | Access message values (returns `std::deque<osc::value>`).
-[`value(n)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp)           | Access `n`-th value.
-[`operator<<(value)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp)  | Add `value` to the message.
-[`operator>>(T&)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp)     | Extract value from the message.
-[`to_packet()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/message.hpp)        | Construct packet from the message.
+[`message{ address }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp) | Construct message with `address`.
+[`address()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)          | Get message address.
+[`values()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)           | Access message values (returns `std::deque<osc::value>`).
+[`value(n)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)           | Access `n`-th value.
+[`operator<<(value)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)  | Add `value` to the message.
+[`operator>>(T&)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)     | Extract value from the message.
+[`to_packet()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)        | Construct packet from the message.
 
 Examples of constructing a message:
 
@@ -204,9 +204,9 @@ message << true << false << nil << inf << osc::clock::now();
 
 ## OSC Bundle
 
-OSC bundle -- represented by the [`osc::bundle`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp) class -- consists of the `#bundle` keyword, followed by a time tag and zero or more elements.
+OSC bundle -- represented by the [`osc::bundle`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp) class -- consists of the `#bundle` keyword, followed by a time tag and zero or more elements.
 
-The time tag indicates when the bundle is to be executed. If the time tag is in the past or the bundle was constructed with [osc::immed](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/types.hpp) time tag (the default), the bundle is to be executed immediately upon receipt.
+The time tag indicates when the bundle is to be executed. If the time tag is in the past or the bundle was constructed with [osc::immed](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp) time tag (the default), the bundle is to be executed immediately upon receipt.
 
 Bundle elements are instances of `osc::element` and can themselves be bundles. In other words, bundles can contain other bundles (Inception-style).
 
@@ -214,14 +214,14 @@ Bundle elements are instances of `osc::element` and can themselves be bundles. I
 
  Function | Description
 :--------:|:-----------
-[`bundle{ time = immed }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp) | Construct bundle with tag `time`.
-[`time()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)                 | Get bundle time.
-[`elements()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)             | Access bundle elements (returns `std::deque<osc::element>`).
-[`element(n)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)             | Access `n`-th element.
-[`operator<<(element)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)    | Add `element` to the bundle.
-[`operator>>(message&)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)   | Extract message from the bundle.
-[`operator>>(bundle&)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)    | Extract bundle from the bundle.
-[`to_packet()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/bundle.hpp)            | Create packet from the bundle.
+[`bundle{ time = immed }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp) | Construct bundle with tag `time`.
+[`time()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)                 | Get bundle time.
+[`elements()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)             | Access bundle elements (returns `std::deque<osc::element>`).
+[`element(n)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)             | Access `n`-th element.
+[`operator<<(element)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)    | Add `element` to the bundle.
+[`operator>>(message&)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)   | Extract message from the bundle.
+[`operator>>(bundle&)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)    | Extract bundle from the bundle.
+[`to_packet()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)            | Create packet from the bundle.
 
 Examples of constructing a bundle:
 
@@ -296,11 +296,11 @@ The `parse()` function may throw one of the following exceptions (derived from `
 
 | Exception |
 |:---------:|
-|[`osc::invalid_value`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/errors.hpp)   | `std::invalid_argument`
-|[`osc::invalid_message`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/errors.hpp) | `std::invalid_argument`
-|[`osc::invalid_element`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/errors.hpp) | `std::invalid_argument`
-|[`osc::invalid_bundle`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/errors.hpp)  | `std::invalid_argument`
-|[`osc::invalid_packet`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/errors.hpp)  | `std::invalid_argument`
+|[`osc::invalid_value`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/errors.hpp)   | `std::invalid_argument`
+|[`osc::invalid_message`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/errors.hpp) | `std::invalid_argument`
+|[`osc::invalid_element`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/errors.hpp) | `std::invalid_argument`
+|[`osc::invalid_bundle`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/errors.hpp)  | `std::invalid_argument`
+|[`osc::invalid_packet`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/errors.hpp)  | `std::invalid_argument`
 
 Receiving example:
 
@@ -418,10 +418,10 @@ if(message.values().are<std::string, int, double, osc::time>())
 
 **libosc++** provides _OSC message dispatching_ facility described in the OSC specification. Using this facility an OSC server simply needs to:
 
- - create an instance of [`osc::address_space`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp);
- - optionally, supply [`osc::callback_sched`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp) callback scheduling function;
- - register one or more [`osc::callback`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp) functions;
- - call [`dispatch()`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp) for every received packet.
+ - create an instance of [`osc::address_space`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp);
+ - optionally, supply [`osc::callback_sched`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) callback scheduling function;
+ - register one or more [`osc::callback`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) functions;
+ - call [`dispatch()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) for every received packet.
 
 Contrary to the OSC specification though, **libosc++** uses regex for pattern matching within the address space.
 
@@ -490,11 +490,11 @@ NB: Since the extraction operators (`>>`) modify the message, `set_coords()` abo
 
  Function | Description
 :--------:|:-----------
-[`address_space{ sched = call_immed{ } }`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp) | Construct empty address space.<sup>2</sup>
-[`add(pattern, callback)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp)                 | Add `callback` function matching `pattern`.
-[`dispatch(element)`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp)                      | Dispatch received element.
+[`address_space{ sched = call_immed{ } }`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) | Construct empty address space.<sup>2</sup>
+[`add(pattern, callback)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)                 | Add `callback` function matching `pattern`.
+[`dispatch(element)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)                      | Dispatch received element.
 
-<sup>2</sup> **libosc++** relies on a user-provided `sched` function to schedule callbacks for future execution. The library itself includes default implementation [`osc::call_immed`](https://github.com/dimitry-ishenko-cpp/liboscpp/blob/master/src/dispatch.hpp), which disregards the time tag and executes the callback immediately.
+<sup>2</sup> **libosc++** relies on a user-provided `sched` function to schedule callbacks for future execution. The library itself includes default implementation [`osc::call_immed`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp), which disregards the time tag and executes the callback immediately.
 
 ## Authors
 
