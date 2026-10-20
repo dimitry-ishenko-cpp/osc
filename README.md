@@ -1,10 +1,13 @@
 # osc++ – an OSC Library for C++
 
-The **osc++** library allows one to easily create and parse [OSC (Open Sound Control)](https://opensoundcontrol.org) packets.
+The **osc++** library allows one to easily create and parse [OSC (Open Sound
+Control)](https://opensoundcontrol.org) packets.
 
-OSC is an open, transport-independent, message-based protocol developed for communication between computers and other multimedia devices.
+OSC is an open, transport-independent, message-based protocol developed for
+communication between computers and other multimedia devices.
 
-See the [Usage](#usage) section below if you are planning to develop applications with **osc++**.
+See the [Usage](#usage) section below if you are planning to develop
+applications with **osc++**.
 
 ## Installation
 
@@ -19,7 +22,8 @@ set up the archive and be sure to add the _dev_ component. Then, run:
 sudo apt install libosc++
 ```
 
-Install the development package, if you are planning to develop applications with **osc++**:
+Install the development package, if you are planning to develop applications
+with **osc++**:
 ```shell
 sudo apt install libosc++-dev
 ```
@@ -39,7 +43,8 @@ make
 sudo make install
 ```
 
-Latest master (requires [git](https://git-scm.com/) and [CMake](https://cmake.org/) >= 3.16):
+Latest master (requires [git](https://git-scm.com/) and
+[CMake](https://cmake.org/) >= 3.16):
 
 ```shell
 p=osc
@@ -59,19 +64,24 @@ To use **osc++** in your application simply add:
 #include <osc++.hpp>
 ```
 
-to your file(s) and link with `-losc++`. For [CMake](https://cmake.org/)-based projects use:
+to your file(s) and link with `-losc++`. For [CMake](https://cmake.org/)-based
+projects use:
 
 ```cmake
 find_package(osc++ REQUIRED)
 ...
-target_link_libraries(marvin PRIVATE osc++::osc++)
+target_link_libraries(my_project PRIVATE osc++::osc++)
 ```
 
-to find the library and link with it. **osc++** additionally exports `osc++::osc++_static` and `osc++::osc++_shared` targets, which you can use to explicitly link with the static and shared versions of the library respectively.
+to find the library and link with it. **osc++** additionally exports
+`osc++::osc++_static` and `osc++::osc++_shared` targets, which you can use to
+explicitly link with the static and shared versions of the library
+respectively.
 
 ## Description
 
-**osc++** supports all standard OSC data types and most of the non-standard (extended) ones. The following table summarizes which types are supported:
+**osc++** supports all standard OSC data types and most of the non-standard
+(extended) ones. The following table summarizes which types are supported:
 
  OSC type | Implemented as
 :--------:|:--------------:
@@ -90,9 +100,13 @@ to find the library and link with it. **osc++** additionally exports `osc++::osc
 
 <sup>1</sup> `using clock = std::chrono::system_clock`.
 
-All supported data types are encapsulated in the [`osc::value`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/value.hpp) variant class.
+All supported data types are encapsulated in the
+[`osc::value`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/value.hpp)
+variant class.
 
-`osc::value` can be implicitly instantiated from any of the supported types, and has `is_...()` and `to_...()` series of functions to query and extract stored value. For example:
+`osc::value` can be implicitly instantiated from any of the supported types,
+and has `is_...()` and `to_...()` series of functions to query and extract
+stored value. For example:
 
 ```c++
 osc::value value{ 42 };
@@ -106,11 +120,16 @@ if(value.is_string()) accept(value.to_string());
 
 ## OSC Packets
 
-OSC data is transmitted in packets. An application transmitting the packets is called _OSC client_, and application receiving the packets is called _OSC server_.
+OSC data is transmitted in packets. An application transmitting the packets is
+called _OSC client_, and application receiving the packets is called _OSC
+server_.
 
 An OSC packet is either an _OSC message_ or an _OSC bundle_.
 
-Within the library packets are represented by the [`osc::packet`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp) class, which is a storage container (not entirely unlike `std::vector`) and provides the following functions:
+Within the library packets are represented by the
+[`osc::packet`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/packet.hpp)
+class, which is a storage container (not entirely unlike `std::vector`) and
+provides the following functions:
 
  Function | Description
 :--------:|:-----------
@@ -148,9 +167,15 @@ socket.async_wait(asio::ip::udp::socket::wait_read, [=](const asio::error_code& 
 });
 ```
 
-As mentioned earlier, a packet is either a message or a bundle. Data stored in the packet can be extracted with the `parse()` function, which returns an instance of [`osc::element`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/element.hpp).
+As mentioned earlier, a packet is either a message or a bundle. Data stored in
+the packet can be extracted with the `parse()` function, which returns an
+instance of
+[`osc::element`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/element.hpp).
 
-`osc::element` is a variant class encapsulating `osc::message` and `osc::bundle`, and has `is_message()`/`is_bundle()` and `to_message()`/`to_bundle()` functions to query and extract stored data. For example:
+`osc::element` is a variant class encapsulating `osc::message` and
+`osc::bundle`, and has `is_message()`/`is_bundle()` and
+`to_message()`/`to_bundle()` functions to query and extract stored data. For
+example:
 
 ```c++
 auto element{ packet.parse() };
@@ -168,11 +193,18 @@ else if(element.is_message())
 
 ## OSC Message
 
-OSC message—represented by the [`osc::message`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp) class—consists of an address pattern followed by zero or more arguments, which are instances of `osc::value`.
+OSC message—represented by the
+[`osc::message`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/message.hpp)
+class—consists of an address pattern followed by zero or more arguments, which
+are instances of `osc::value`.
 
-The address pattern starts with `/` (forward slash) and contains one or more nodes separated by `/`. The pattern can be thought of as a path in a tree-like structure with intermediate nodes called _OSC containers_ and leaf nodes called _OSC methods_.
+The address pattern starts with `/` (forward slash) and contains one or more
+nodes separated by `/`. The pattern can be thought of as a path in a tree-like
+structure with intermediate nodes called _OSC containers_ and leaf nodes called
+_OSC methods_.
 
-As such, OSC message can be considered to be a request to execute given method with certain arguments.
+As such, OSC message can be considered to be a request to execute given method
+with certain arguments.
 
 `osc::message` provides the following functions:
 
@@ -202,11 +234,18 @@ message << true << false << nil << inf << osc::clock::now();
 
 ## OSC Bundle
 
-OSC bundle—represented by the [`osc::bundle`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp) class—consists of the `#bundle` keyword, followed by a time tag and zero or more elements.
+OSC bundle—represented by the
+[`osc::bundle`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/bundle.hpp)
+class—consists of the `#bundle` keyword, followed by a time tag and zero or
+more elements.
 
-The time tag indicates when the bundle is to be executed. If the time tag is in the past or the bundle was constructed with [osc::immed](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp) time tag (the default), the bundle is to be executed immediately upon receipt.
+The time tag indicates when the bundle is to be executed. If the time tag is in
+the past or the bundle was constructed with
+[osc::immed](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/types.hpp)
+time tag (the default), the bundle is to be executed immediately upon receipt.
 
-Bundle elements are instances of `osc::element` and can themselves be bundles. In other words, bundles can contain other bundles (Inception-style).
+Bundle elements are instances of `osc::element` and can themselves be bundles.
+In other words, bundles can contain other bundles (Inception-style).
 
 `osc::bundle` provides the following functions:
 
@@ -290,7 +329,8 @@ OSC server—the one receiving the packets—usually will:
  - if bundle, recurse into it and check each of its elements;
  - if message, "execute" it.
 
-The `parse()` function may throw one of the following exceptions (derived from `std::invalid_argument`):
+The `parse()` function may throw one of the following exceptions (derived from
+`std::invalid_argument`):
 
 | Exception |
 |:---------:|
@@ -345,9 +385,13 @@ socket.async_wait(udp::socket::wait_read, [=](const asio::error_code& ec)
 });
 ```
 
-To help with processing of received packets, `osc::bundle` implements the extraction operator (`>>`) as well as the `elements().are<...>()` function template to check types of its elements.
+To help with processing of received packets, `osc::bundle` implements the
+extraction operator (`>>`) as well as the `elements().are<...>()` function
+template to check types of its elements.
 
-Let's say we want to implement an OSC server that receives bundles, which contain a message and another bundle with two more messages inside. This can be implemented in the following (boring) way:
+Let's say we want to implement an OSC server that receives bundles, which
+contain a message and another bundle with two more messages inside. This can be
+implemented in the following (boring) way:
 
 ```c++
 osc::packet packet{ ... };
@@ -360,7 +404,8 @@ auto message_2 = bundle_2.element(0).to_message();
 auto message_3 = bundle_2.element(1).to_message();
 ```
 
-The above example uses the `element()` function and relies on exceptions. We could instead use `operator>>`:
+The above example uses the `element()` function and relies on exceptions. We
+could instead use `operator>>`:
 
 ```c++
 osc::packet packet{ ... };
@@ -374,7 +419,8 @@ bundle >> message >> bundle_2;
 bundle_2 >> message_2 >> message_3;
 ```
 
-We can also use `elements().are<...>()` to check bundle signature and avoid exceptions:
+We can also use `elements().are<...>()` to check bundle signature and avoid
+exceptions:
 
 ```c++
 osc::packet packet{ ... };
@@ -399,7 +445,8 @@ if(element.is_bundle())
 }
 ```
 
-Likewise, `osc::message` implements `operator>>` and `values().are<...>()` to help check and extract its values:
+Likewise, `osc::message` implements `operator>>` and `values().are<...>()` to
+help check and extract its values:
 
 ```c++
 osc::message message{ "x/y/z" };
@@ -417,14 +464,23 @@ if(message.values().are<std::string, int, double, osc::time>())
 
 ## Dispatching
 
-**osc++** provides _OSC message dispatching_ facility described in the OSC specification. Using this facility an OSC server simply needs to:
+**osc++** provides _OSC message dispatching_ facility described in the OSC
+specification. Using this facility an OSC server simply needs to:
 
- - create an instance of [`osc::address_space`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp);
- - optionally, supply [`osc::callback_sched`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) callback scheduling function;
- - register one or more [`osc::callback`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) functions;
- - call [`dispatch()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp) for every received packet.
+ - create an instance of
+   [`osc::address_space`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp);
+ - optionally, supply
+   [`osc::callback_sched`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)
+   callback scheduling function;
+ - register one or more
+   [`osc::callback`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)
+   functions;
+ - call
+   [`dispatch()`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)
+   for every received packet.
 
-Contrary to the OSC specification though, **osc++** uses regex for pattern matching within the address space.
+Contrary to the OSC specification though, **osc++** uses regex for pattern
+matching within the address space.
 
 Example:
 
@@ -485,7 +541,10 @@ state after /set/coord: 7.8 9 5.6
 state after /set/speed: 7.8 9 5.6
 ```
 
-NB: Since the extraction operators (`>>`) modify the message, `set_coords()` above takes `osc::message` by value, which involves copying. On the other hand, `set_coord()` only needs const ref as it uses the `value()` function to access values without extracting them.
+NB: Since the extraction operators (`>>`) modify the message, `set_coords()`
+above takes `osc::message` by value, which involves copying. On the other hand,
+`set_coord()` only needs const ref as it uses the `value()` function to access
+values without extracting them.
 
 `osc::address_space` provides the following functions:
 
@@ -495,7 +554,13 @@ NB: Since the extraction operators (`>>`) modify the message, `set_coords()` abo
 [`add(pattern, callback)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)                 | Add `callback` function matching `pattern`.
 [`dispatch(element)`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp)                      | Dispatch received element.
 
-<sup>2</sup> **osc++** relies on a user-provided `sched` function to schedule callbacks for future execution. The library itself includes default implementation [`osc::call_immed`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp), which disregards the time tag and executes the callback immediately.
+<sup>2</sup> **osc++** relies on a user-provided `sched` function to schedule
+callbacks for future execution. The library itself includes default
+implementation
+[`osc::call_immed`](https://github.com/dimitry-ishenko-cpp/osc/blob/master/src/dispatch.hpp),
+which disregards the time tag and executes the callback immediately.
+
+Share and enjoy.
 
 ## Authors
 
