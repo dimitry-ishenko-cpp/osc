@@ -10,22 +10,12 @@ See the [Usage](#usage) section below if you are planning to develop application
 
 ### Binary
 
-Debian/Ubuntu/etc:
+Binary packages for Debian, Ubuntu, RaspberryPi and other Debian-based
+distributions can be installed from the [CCCP Linux Package
+Archive](https://github.com/cccp-linux/archive). Follow their instructions to
+set up the archive and be sure to add the _dev_ component. Then, run:
 
 ```shell
-sudo add-apt-repository ppa:ppa-verse/casparcg
-sudo apt install libosc++
-```
-
-Install the development package, if you are planning to develop applications with **osc++**:
-```shell
-sudo apt install libosc++-dev
-```
-
-RaspberryPi:
-
-```shell
-sudo add-apt-repository -S deb https://ppa.launchpadcontent.net/ppa-verse/casparcg/ubuntu jammy main
 sudo apt install libosc++
 ```
 
