@@ -12,3 +12,18 @@ option(BUILD_EXAMPLES "Build examples" ON)
 if(BUILD_EXAMPLES)
     add_subdirectory(example)
 endif()
+
+option(BUILD_TESTS "Build tests" ON)
+set(GOOGLE_TEST_DIR "" CACHE PATH "Path to GoogleTest source")
+
+if(BUILD_TESTS)
+    enable_testing()
+
+    if(GOOGLE_TEST_DIR)
+        add_subdirectory(${GOOGLE_TEST_DIR} googletest)
+    else()
+        find_package(GTest REQUIRED)
+    endif()
+
+    add_subdirectory(test)
+endif()

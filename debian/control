@@ -5,6 +5,7 @@ Maintainer: Dimitry Ishenko <dimitry.ishenko@gmail.com>
 Build-Depends:
  debhelper-compat (= 13),
  cmake (>= 3.16),
+ libgtest-dev <!nocheck>,
 Standards-Version: 4.6.2
 Homepage: https://github.com/dimitry-ishenko-cpp/osc
 Vcs-Browser: https://github.com/dimitry-ishenko-cpp/osc
