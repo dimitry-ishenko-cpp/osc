@@ -110,12 +110,12 @@ stored value. For example:
 
 ```c++
 osc::value value{ 42 };
-if(value.is_int32()) auto n = value.to_int32();
+if (value.is_int32()) auto n = value.to_int32();
 ```
 
 ```c++
 osc::value value{ "The ultimate answer" };
-if(value.is_string()) accept(value.to_string());
+if (value.is_string()) accept(value.to_string());
 ```
 
 ## OSC Packets
@@ -157,7 +157,7 @@ Example of receiving a packet:
 ```c++
 asio::ip::udp::socket socket{ io };
 ...
-socket.async_wait(asio::ip::udp::socket::wait_read, [=](const asio::error_code& ec)
+socket.async_wait(asio::ip::udp::socket::wait_read, [&](const asio::error_code& ec)
 {
     osc::packet packet{ static_cast<osc::int32>(socket.available()) };
     asio::ip::udp::endpoint remote;
@@ -179,12 +179,12 @@ example:
 
 ```c++
 auto element{ packet.parse() };
-if(element.is_bundle())
+if (element.is_bundle())
 {
     auto bundle = element.to_bundle();
     ...
 }
-else if(element.is_message())
+else if (element.is_message())
 {
     auto message = element.to_message();
     ...
@@ -297,7 +297,7 @@ Transmitting example:
 ```c++
 #include <asio.hpp>
 #include <osc++.hpp>
-using namespace asio::ip::udp;
+using asio::ip::udp;
 ...
 asio::io_context io;
 udp::endpoint remote{ ... };
@@ -313,7 +313,7 @@ socket.send_to(asio::buffer(packet.data(), packet.size()), remote);
 
 osc::bundle bundle;
 bundle << (osc::message{ "/a/b/c" } << 1 << 2 << 3)
-       << (osc::message{ "/1/2/3" } << 'a' << 'b' << 'c' );
+       << (osc::message{ "/1/2/3" } << 'a' << 'b' << 'c');
 
 auto packet_2 = bundle.to_packet();
 socket.send_to(asio::buffer(packet_2.data(), packet_2.size()), remote);
@@ -345,7 +345,7 @@ Receiving example:
 ```c++
 #include <asio.hpp>
 #include <osc++.hpp>
-using namespace asio::ip::udp;
+using asio::ip::udp;
 
 asio::io_context io;
 udp::endpoint local{ ... };
@@ -354,34 +354,33 @@ udp::socket socket{ io };
 socket.open(udp::v4());
 socket.bind(local);
 
-socket.async_wait(udp::socket::wait_read, [=](const asio::error_code& ec)
+socket.async_wait(udp::socket::wait_read, [&](const asio::error_code& ec)
 {
-    if(!ec)
-    {
-        osc::packet packet{ static_cast<osc::int32>(socket.available()) };
-        udp::endpoint remote;
-        socket.receive_from(asio::buffer(packet.data(), packet.size()), remote);
+    if (ec) return;
 
-        try
+    osc::packet packet{ static_cast<osc::int32>(socket.available()) };
+    udp::endpoint remote;
+    socket.receive_from(asio::buffer(packet.data(), packet.size()), remote);
+
+    try
+    {
+        auto element = packet.parse();
+        if (element.is_message())
         {
-            auto element = packet.parse();
-            if(element.is_message())
-            {
-                auto message = element.to_message();
-                execute(message);
-            }
-            else if(element.is_bundle())
-            {
-                auto bundle = element.to_bundle();
-                recurse_into(bundle);
-            }
+            auto message = element.to_message();
+            execute(message);
         }
-        catch(std::invalid_argument& e)
+        else if (element.is_bundle())
         {
-            std::cerr << e.what() << std::endl;
+            auto bundle = element.to_bundle();
+            recurse_into(bundle);
         }
-        ...
     }
+    catch (std::invalid_argument& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    ...
 });
 ```
 
@@ -429,13 +428,13 @@ auto element = packet.parse(); // NB: may throw
 osc::bundle bundle, bundle_2;
 osc::message message, message_2, message_3;
 
-if(element.is_bundle())
+if (element.is_bundle())
 {
     element >> bundle;
-    if(bundle.elements().are<osc::message, osc::bundle>())
+    if (bundle.elements().are<osc::message, osc::bundle>())
     {
         bundle >> message >> bundle_2;
-        if(bundle_2.elements().are<osc::message, osc::message>())
+        if (bundle_2.elements().are<osc::message, osc::message>())
         {
             bundle_2 >> message_2 >> message_3;
             // look ma, no exceptions
@@ -452,7 +451,7 @@ help check and extract its values:
 osc::message message{ "x/y/z" };
 message << "The ultimate answer" << 42 << 2.71828 << osc::clock::now();
 
-if(message.values().are<std::string, int, double, osc::time>())
+if (message.values().are<std::string, int, double, osc::time>())
 {
     std::string v1;
     int v2;
@@ -494,10 +493,10 @@ void set_coords(osc::message message) // callback
 
 void set_coord(const osc::message& message) // callback
 {
-    if(message.values().are<char, double>())
+    if (message.values().are<char, double>())
     {
         auto coord = message.value(1).to_double();
-        switch(message.value(0).to_char())
+        switch (message.value(0).to_char())
         {
             case 'x': x = coord; break;
             case 'y': y = coord; break;
