@@ -121,9 +121,9 @@ void value::append_to(packet& p, time t)
 
         auto total = t.time_since_epoch();
         auto sec   = duration_cast<seconds>(total);
-        auto frac  = duration_cast<fractions>(total - sec);
+        auto frac  = round<fractions>(total - sec);
 
-        append_to(p, static_cast<int64>((sec.count() << 32) | frac.count()));
+        append_to(p, static_cast<int64>((sec.count() << 32) + frac.count()));
     }
     else append_to(p, static_cast<int64>(1));
 }
@@ -222,7 +222,7 @@ time value::parse_time(std::string_view& p)
         t -= (70 * 365 + 17) * 24h;
 
         t += seconds{(i >> 32) & 0xffffffff};
-        t += duration_cast<clock::duration>(fractions{i & 0xffffffff});
+        t += round<clock::duration>(fractions{i & 0xffffffff});
     }
     else t = immed;
 
