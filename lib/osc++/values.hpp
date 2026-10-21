@@ -25,17 +25,10 @@ public:
     template<typename... Ts>
     bool are() const
     {
-        return size() == sizeof...(Ts) && are_<0, Ts...>();
-    }
+        if(size() != sizeof...(Ts)) return false;
 
-private:
-    ////////////////////
-    template<std::size_t n, typename T, typename... Us>
-    constexpr inline bool are_() const
-    {
-        if constexpr (sizeof...(Us))
-            return (*this)[n].is<T>() && are_<n+1, Us...>();
-        else return (*this)[n].is<T>();
+        [[maybe_unused]] std::size_t n = 0;
+        return (... && (*this)[n++].is<Ts>());
     }
 };
 
