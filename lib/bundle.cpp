@@ -44,13 +44,8 @@ bundle& bundle::operator>>(bundle& b)
 ////////////////////////////////////////////////////////////////////////////////
 int32 bundle::space() const
 {
-    int32 total = 0;
-
-    total += value::space(string{"#bundle"});
-    total += value::space(time());
-
+    int32 total = value::space(string{"#bundle"}) + value::space(time());
     for (auto&& e : elements()) total += e.space();
-
     return total;
 }
 
@@ -59,7 +54,6 @@ packet bundle::to_packet() const
 {
     packet p;
     append_to(p);
-
     return p;
 }
 
