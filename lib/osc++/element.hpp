@@ -11,6 +11,7 @@
 #include "osc++/message.hpp"
 #include "osc++/types.hpp"
 
+#include <string_view>
 #include <variant>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,8 +44,7 @@ public:
     int32 space() const; // space requirement
 
     ////////////////////
-    static bool maybe(packet&); // is this packet an element?
-    static element parse(packet&);
+    static element parse(std::string_view&);
 
 private:
     ////////////////////

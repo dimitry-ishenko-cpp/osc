@@ -10,6 +10,8 @@
 #include "osc++/types.hpp"
 #include "osc++/values.hpp"
 
+#include <string_view>
+
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
@@ -51,8 +53,8 @@ public:
     packet to_packet() const;
 
     ////////////////////
-    static bool maybe(packet&); // is this packet a message?
-    static message parse(packet&);
+    static bool maybe(std::string_view); // is this packet a message?
+    static message parse(std::string_view&);
 
 private:
     ////////////////////

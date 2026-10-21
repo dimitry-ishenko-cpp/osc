@@ -8,6 +8,8 @@
 #pragma once
 
 #include "osc++/types.hpp"
+
+#include <string_view>
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,12 +36,14 @@ public:
     void resize(int32 size) { data_.resize(size); }
     void clear() { data_.clear(); }
 
-    element parse();
+    element parse() const;
 
 private:
     ////////////////////
     std::vector<char> data_;
     void append(const char*, int32);
+
+    static std::string_view take(std::string_view&, int32);
 
     friend class bundle;
     friend class element;

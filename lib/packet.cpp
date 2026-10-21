@@ -11,24 +11,31 @@
 #include "osc++/message.hpp"
 #include "osc++/packet.hpp"
 
+#include <iterator> // std::ssize
+
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
 
-element packet::parse()
+element packet::parse() const
 {
-    if (bundle::maybe(*this))
-        return bundle::parse(*this);
-
-    else if (message::maybe(*this))
-        return message::parse(*this);
-
-    else throw invalid_packet{"bad or empty"};
+    std::string_view p{data_};
+    return element::parse(p);
 }
 
 void packet::append(const char* data, int32 size)
 {
     data_.insert(data_.end(), data, data + size);
+}
+
+std::string_view packet::take(std::string_view& v, int32 n)
+{
+    if (n < 0 || n > std::ssize(v)) throw invalid_packet{"bad size"};
+
+    auto head = v.substr(0, n);
+    v.remove_prefix(n);
+
+    return head;
 }
 
 }

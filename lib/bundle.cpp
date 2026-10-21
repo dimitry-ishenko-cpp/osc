@@ -45,7 +45,7 @@ bundle& bundle::operator>>(bundle& b)
 int32 bundle::space() const
 {
     int32 total = value::space(string{"#bundle"}) + value::space(time());
-    for (auto&& e : elements()) total += e.space();
+    for (auto&& e : elements()) total += sizeof(int32) + e.space();
     return total;
 }
 
@@ -63,24 +63,32 @@ void bundle::append_to(packet& p) const
     value::append_to(p, string{"#bundle"});
     value::append_to(p, time());
 
-    for (auto&& e : elements()) e.append_to(p);
+    for (auto&& e : elements())
+    {
+        value::append_to(p, e.space());
+        e.append_to(p);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool bundle::maybe(packet& p)
+bool bundle::maybe(std::string_view p)
 {
-    return p.data_.size() && p.data_[0] == '#';
+    return p.size() && p[0] == '#';
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bundle bundle::parse(packet& p)
+bundle bundle::parse(std::string_view& p)
 {
-    auto s = value::parse_string(p);
-    if (s != "#bundle") throw invalid_bundle{"missing '#bundle'"};
+    if (value::parse_string(p) != "#bundle") throw invalid_bundle{"missing '#bundle'"};
 
     bundle b{value::parse_time(p)};
-    while (osc::element::maybe(p)) b << osc::element::parse(p);
+    while (p.size())
+    {
+        auto size = value::parse_int32(p);
+        auto e = packet::take(p, size);
 
+        b << osc::element::parse(e);
+    }
     return b;
 }
 

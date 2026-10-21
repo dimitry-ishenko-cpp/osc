@@ -9,9 +9,9 @@
 #include "osc++/packet.hpp"
 #include "osc++/value.hpp"
 
-#include <algorithm>
 #include <bit>
 #include <concepts>
+#include <cstring> // std::memcpy
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
@@ -141,7 +141,7 @@ void value::append_to(packet& p, char c)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-value value::parse(packet& p, char tag)
+value value::parse(std::string_view& p, char tag)
 {
     switch(tag)
     {
@@ -162,65 +162,52 @@ value value::parse(packet& p, char tag)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int32 value::parse_int32(packet& p)
+int32 value::parse_int32(std::string_view& p)
 {
-    if (p.data_.size() < sizeof(int32)) throw invalid_packet{"incomplete (int32)"};
-
-    int32 i = betoh(*reinterpret_cast<int32*>(p.data_.data()));
-    p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int32));
-
-    return i;
+    int32 i;
+    std::memcpy(&i, packet::take(p, sizeof(i)).data(), sizeof(i));
+    return betoh(i);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-float value::parse_float(packet& p)
+float value::parse_float(std::string_view& p)
 {
     return std::bit_cast<float>(parse_int32(p));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-string value::parse_string(packet& p)
+string value::parse_string(std::string_view& p)
 {
-    auto end = std::find(p.data_.begin(), p.data_.end(), '\0');
-    if (end == p.data_.end()) throw invalid_packet{"missing '\0'"};
+    auto len = p.find('\0');
+    if (len == p.npos) throw invalid_packet{"incomplete (string)"};
 
-    string s{p.data_.begin(), end};
+    auto s = p.substr(0, len);
+    packet::take(p, padded(len + 1));
 
-    end = p.data_.begin() + padded(end - p.data_.begin() + 1);
-    p.data_.erase(p.data_.begin(), end);
-
-    return s;
+    return std::string{s};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-blob value::parse_blob(packet& p)
+blob value::parse_blob(std::string_view& p)
 {
     auto size = parse_int32(p);
 
-    if (p.size() < size) throw invalid_packet{"incomplete (blob)"};
-    auto end = p.data_.begin() + size;
+    auto b = packet::take(p, size);
+    packet::take(p, padded(size) - size);
 
-    blob b{p.data_.begin(), end};
-
-    end = p.data_.begin() + padded(end - p.data_.begin());
-    p.data_.erase(p.data_.begin(), end);
-
-    return b;
+    return blob(b.begin(), b.end());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int64 value::parse_int64(packet& p)
+int64 value::parse_int64(std::string_view& p)
 {
-    if (p.data_.size() < sizeof(int64)) throw invalid_packet{"incomplete (int64)"};
-
-    int64 i = betoh(*reinterpret_cast<int64*>(p.data_.data()));
-    p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int64));
-
-    return i;
+    int64 i;
+    std::memcpy(&i, packet::take(p, sizeof(i)).data(), sizeof(i));
+    return betoh(i);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-time value::parse_time(packet& p)
+time value::parse_time(std::string_view& p)
 {
     using namespace std::chrono;
     using namespace std::chrono_literals;
@@ -243,13 +230,13 @@ time value::parse_time(packet& p)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-double value::parse_double(packet& p)
+double value::parse_double(std::string_view& p)
 {
     return std::bit_cast<double>(parse_int64(p));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-char value::parse_char(packet& p)
+char value::parse_char(std::string_view& p)
 {
     return static_cast<char>(parse_int32(p));
 }

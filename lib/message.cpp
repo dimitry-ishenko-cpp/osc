@@ -35,13 +35,13 @@ packet message::to_packet() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool message::maybe(packet& p)
+bool message::maybe(std::string_view p)
 {
-    return p.data_.size() && p.data_[0] == '/';
+    return p.size() && p[0] == '/';
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-message message::parse(packet& p)
+message message::parse(std::string_view& p)
 {
     auto address = osc::value::parse_string(p);
     message m{address};

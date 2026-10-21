@@ -11,6 +11,8 @@
 #include "osc++/elements_0.hpp"
 #include "osc++/message.hpp"
 
+#include <string_view>
+
 ////////////////////////////////////////////////////////////////////////////////
 namespace osc
 {
@@ -41,8 +43,8 @@ public:
     packet to_packet() const;
 
     ////////////////////
-    static bool maybe(packet&); // is this packet a bundle?
-    static bundle parse(packet&);
+    static bool maybe(std::string_view); // is this packet a bundle?
+    static bundle parse(std::string_view&);
 
 private:
     ////////////////////

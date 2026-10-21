@@ -8,6 +8,8 @@
 #pragma once
 
 #include "osc++/types.hpp"
+
+#include <string_view>
 #include <variant>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,16 +114,16 @@ private:
     friend class element;
     friend class message;
 
-    static value parse(packet&, char tag); // parse value from packet
+    static value parse(std::string_view&, char tag); // parse value from packet
 
-    static  int32 parse_int32 (packet&);
-    static  float parse_float (packet&);
-    static string parse_string(packet&);
-    static   blob parse_blob  (packet&);
-    static  int64 parse_int64 (packet&);
-    static   time parse_time  (packet&);
-    static double parse_double(packet&);
-    static   char parse_char  (packet&);
+    static  int32 parse_int32 (std::string_view&);
+    static  float parse_float (std::string_view&);
+    static string parse_string(std::string_view&);
+    static   blob parse_blob  (std::string_view&);
+    static  int64 parse_int64 (std::string_view&);
+    static   time parse_time  (std::string_view&);
+    static double parse_double(std::string_view&);
+    static   char parse_char  (std::string_view&);
 };
 
 }
