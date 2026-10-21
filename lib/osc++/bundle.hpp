@@ -31,8 +31,8 @@ public:
     auto& elements() const { return elements_; }
     auto& elements() { return elements_; }
 
-    auto& element(std::size_t n) const { return elements_[n]; }
-    auto& element(std::size_t n) { return elements_[n]; }
+    auto& element(std::size_t n) const { return elements_.at(n); }
+    auto& element(std::size_t n) { return elements_.at(n); }
 
     bundle& operator<<(osc::element);
 

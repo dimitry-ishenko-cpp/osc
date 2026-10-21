@@ -24,20 +24,16 @@ bundle& bundle::operator<<(osc::element e)
 ////////////////////////////////////////////////////////////////////////////////
 bundle& bundle::operator>>(message& m)
 {
-    auto e = std::move(elements_.front());
+    m = std::move(elements_.at(0).to_message());
     elements_.pop_front();
-
-    m = std::move(e.to_message());
     return (*this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bundle& bundle::operator>>(bundle& b)
 {
-    auto e = std::move(elements_.front());
+    b = std::move(elements_.at(0).to_bundle());
     elements_.pop_front();
-
-    b = std::move(e.to_bundle());
     return (*this);
 }
 
