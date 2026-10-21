@@ -30,7 +30,7 @@ sudo apt install libosc++-dev
 
 ### From source
 
-Stable version (requires [CMake](https://cmake.org/) >= 3.16):
+Stable version (requires [CMake](https://cmake.org/) >= 3.22):
 
 ```shell
 p=osc v=2.0.1
