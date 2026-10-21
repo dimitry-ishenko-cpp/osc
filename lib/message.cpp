@@ -21,13 +21,8 @@ message::message(string s) : address_{std::move(s)}
 ////////////////////////////////////////////////////////////////////////////////
 int32 message::space() const
 {
-    int32 total = 0;
-
-    total += value::space(address());
-    total += value::space(tags());
-
+    int32 total = value::space(address()) + value::space(tags());
     for (auto&& val : values()) total += val.space();
-
     return total;
 }
 
@@ -36,7 +31,6 @@ packet message::to_packet() const
 {
     packet p;
     append_to(p);
-
     return p;
 }
 
