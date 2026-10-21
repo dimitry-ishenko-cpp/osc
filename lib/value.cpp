@@ -78,7 +78,7 @@ void value::append_to(packet& p, int32 i)
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, float f)
 {
-    append_to(p, *reinterpret_cast<int32*>(&f));
+    append_to(p, std::bit_cast<int32>(f));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -132,13 +132,13 @@ void value::append_to(packet& p, time t)
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, double d)
 {
-    append_to(p, *reinterpret_cast<int64*>(&d));
+    append_to(p, std::bit_cast<int64>(d));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, char c)
 {
-    append_to(p, static_cast<int32>(c));
+    append_to(p, static_cast<int32>((unsigned char)c));
 }
 
 //////////////////////////////////////////////////if//////////////////////////////
@@ -177,7 +177,7 @@ int32 value::parse_int32(packet& p)
 float value::parse_float(packet& p)
 {
     auto i = parse_int32(p);
-    return *reinterpret_cast<float*>(&i);
+    return std::bit_cast<float>(i);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +249,7 @@ time value::parse_time(packet& p)
 double value::parse_double(packet& p)
 {
     auto i = parse_int64(p);
-    return *reinterpret_cast<double*>(&i);
+    return std::bit_cast<double>(i);
 }
 
 //////////////////////////////////////////////////if//////////////////////////////
