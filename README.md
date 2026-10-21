@@ -488,7 +488,7 @@ double x, y, z;
 
 void set_coords(osc::message message) // callback
 {
-    if(message.values().are<double, double, double>()) message >> x >> y >> z;
+    if (message.values().are<double, double, double>()) message >> x >> y >> z;
 }
 
 void set_coord(const osc::message& message) // callback

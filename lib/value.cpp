@@ -143,7 +143,7 @@ void value::append_to(packet& p, char c)
 ////////////////////////////////////////////////////////////////////////////////
 value value::parse(std::string_view& p, char tag)
 {
-    switch(tag)
+    switch (tag)
     {
     case 'i': return parse_int32 (p);
     case 'f': return parse_float (p);

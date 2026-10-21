@@ -25,7 +25,7 @@ public:
     template<typename... Ts>
     bool are() const
     {
-        if(size() != sizeof...(Ts)) return false;
+        if (size() != sizeof...(Ts)) return false;
 
         [[maybe_unused]] std::size_t n = 0;
         return (... && (*this)[n++].is<Ts>());
