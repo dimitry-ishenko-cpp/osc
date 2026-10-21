@@ -51,6 +51,8 @@ message message::parse(packet& p)
     tags.erase(0, 1);
 
     for (auto&& t : tags) m << osc::value::parse(p, t);
+    if (p.size()) throw invalid_packet{"bad size"};
+
     return m;
 }
 
