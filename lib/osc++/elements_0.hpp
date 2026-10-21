@@ -23,11 +23,6 @@ public:
     using std::deque<element>::deque;
 
     template<typename...> bool are() const;
-
-private:
-    ////////////////////
-    template<std::size_t, typename, typename...>
-    constexpr inline bool are_() const;
 };
 
 }
