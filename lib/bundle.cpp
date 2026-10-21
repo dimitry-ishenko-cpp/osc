@@ -15,7 +15,6 @@
 namespace osc
 {
 
-////////////////////////////////////////////////////////////////////////////////
 bundle& bundle::operator<<(osc::element e)
 {
     elements_.push_back(std::move(e));
@@ -50,7 +49,7 @@ int32 bundle::space() const
     total += value::space(string{"#bundle"});
     total += value::space(time());
 
-    for(auto&& e : elements()) total += e.space();
+    for (auto&& e : elements()) total += e.space();
 
     return total;
 }
@@ -70,7 +69,7 @@ void bundle::append_to(packet& p) const
     value::append_to(p, string{"#bundle"});
     value::append_to(p, time());
 
-    for(auto&& e : elements()) e.append_to(p);
+    for (auto&& e : elements()) e.append_to(p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -83,13 +82,12 @@ bool bundle::maybe(packet& p)
 bundle bundle::parse(packet& p)
 {
     auto s = value::parse_string(p);
-    if(s != "#bundle") throw invalid_bundle{"missing '#bundle'"};
+    if (s != "#bundle") throw invalid_bundle{"missing '#bundle'"};
 
     bundle b{value::parse_time(p)};
-    while(osc::element::maybe(p)) b << osc::element::parse(p);
+    while (osc::element::maybe(p)) b << osc::element::parse(p);
 
     return b;
 }
 
-////////////////////////////////////////////////////////////////////////////////
 }

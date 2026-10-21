@@ -14,11 +14,10 @@
 namespace osc
 {
 
-////////////////////////////////////////////////////////////////////////////////
 int32 element::space() const
 {
-         if(is_message()) return to_message().space();
-    else if(is_bundle ()) return to_bundle ().space();
+         if (is_message()) return to_message().space();
+    else if (is_bundle ()) return to_bundle ().space();
     else throw invalid_element{"bad type"};
 }
 
@@ -27,8 +26,8 @@ void element::append_to(packet& p) const
 {
     value::append_to(p, space());
 
-         if(is_message()) to_message().append_to(p);
-    else if(is_bundle ()) to_bundle ().append_to(p);
+         if (is_message()) to_message().append_to(p);
+    else if (is_bundle ()) to_bundle ().append_to(p);
     else throw invalid_element{"bad type"};
 }
 
@@ -51,11 +50,10 @@ element element::parse(packet& p)
     };
 
     auto pad = size - p.size();
-    if(pad < 0 || pad > 3) throw invalid_packet{"bad size"};
+    if (pad < 0 || pad > 3) throw invalid_packet{"bad size"};
     p.data_.erase(p.data_.begin(), p.data_.begin() + pad);
 
     return e;
 }
 
-////////////////////////////////////////////////////////////////////////////////
 }

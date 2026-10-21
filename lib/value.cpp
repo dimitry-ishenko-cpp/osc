@@ -17,7 +17,6 @@
 namespace osc
 {
 
-////////////////////////////////////////////////////////////////////////////////
 namespace 
 {
 
@@ -38,34 +37,34 @@ constexpr auto betoh(T val) noexcept
 ////////////////////////////////////////////////////////////////////////////////
 int32 value::space() const
 {
-         if(is_int32 ()) return space(to_int32 ());
-    else if(is_float ()) return space(to_float ());
-    else if(is_string()) return space(to_string());
-    else if(is_blob  ()) return space(to_blob  ());
-    else if(is_int64 ()) return space(to_int64 ());
-    else if(is_time  ()) return space(to_time  ());
-    else if(is_double()) return space(to_double());
-    else if(is_char  ()) return space(to_char  ());
-    else if(is_bool  ()) return space(to_bool  ());
-    else if(is_nil   ()) return space(to_nil   ());
-    else if(is_inf   ()) return space(to_inf   ());
+         if (is_int32 ()) return space(to_int32 ());
+    else if (is_float ()) return space(to_float ());
+    else if (is_string()) return space(to_string());
+    else if (is_blob  ()) return space(to_blob  ());
+    else if (is_int64 ()) return space(to_int64 ());
+    else if (is_time  ()) return space(to_time  ());
+    else if (is_double()) return space(to_double());
+    else if (is_char  ()) return space(to_char  ());
+    else if (is_bool  ()) return space(to_bool  ());
+    else if (is_nil   ()) return space(to_nil   ());
+    else if (is_inf   ()) return space(to_inf   ());
     else throw invalid_value{"bad type"};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& pkt) const
 {
-         if(is_int32 ()) append_to(pkt, to_int32 ());
-    else if(is_float ()) append_to(pkt, to_float ());
-    else if(is_string()) append_to(pkt, to_string());
-    else if(is_blob  ()) append_to(pkt, to_blob  ());
-    else if(is_int64 ()) append_to(pkt, to_int64 ());
-    else if(is_time  ()) append_to(pkt, to_time  ());
-    else if(is_double()) append_to(pkt, to_double());
-    else if(is_char  ()) append_to(pkt, to_char  ());
-    else if(is_bool  ()) append_to(pkt, to_bool  ());
-    else if(is_nil   ()) append_to(pkt, to_nil   ());
-    else if(is_inf   ()) append_to(pkt, to_inf   ());
+         if (is_int32 ()) append_to(pkt, to_int32 ());
+    else if (is_float ()) append_to(pkt, to_float ());
+    else if (is_string()) append_to(pkt, to_string());
+    else if (is_blob  ()) append_to(pkt, to_blob  ());
+    else if (is_int64 ()) append_to(pkt, to_int64 ());
+    else if (is_time  ()) append_to(pkt, to_time  ());
+    else if (is_double()) append_to(pkt, to_double());
+    else if (is_char  ()) append_to(pkt, to_char  ());
+    else if (is_bool  ()) append_to(pkt, to_bool  ());
+    else if (is_nil   ()) append_to(pkt, to_nil   ());
+    else if (is_inf   ()) append_to(pkt, to_inf   ());
     else throw invalid_value{"bad type"};
 }
 
@@ -85,7 +84,7 @@ void value::append_to(packet& p, float f)
 ////////////////////////////////////////////////////////////////////////////////
 void value::append_to(packet& p, string s)
 {
-    if(s.find('\0') != s.npos) throw invalid_value{"string with '\0'"};
+    if (s.find('\0') != s.npos) throw invalid_value{"string with '\0'"};
 
     s.resize(padded(s.size() + 1));
     p.append(s.data(), s.size());
@@ -114,7 +113,7 @@ void value::append_to(packet& p, time t)
 
     using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
 
-    if(t != immed)
+    if (t != immed)
     {
         // "shift" epoch from 1/1/1970 (unix) to 1/1/1900 (osc)
         // which is 70 years + 17 leap days
@@ -166,7 +165,7 @@ value value::parse(packet& p, char tag)
 ////////////////////////////////////////////////////////////////////////////////
 int32 value::parse_int32(packet& p)
 {
-    if(p.data_.size() < sizeof(int32)) throw invalid_packet{"incomplete (int32)"};
+    if (p.data_.size() < sizeof(int32)) throw invalid_packet{"incomplete (int32)"};
 
     int32 i = betoh(*reinterpret_cast<int32*>(p.data_.data()));
     p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int32));
@@ -185,7 +184,7 @@ float value::parse_float(packet& p)
 string value::parse_string(packet& p)
 {
     auto end = std::find(p.data_.begin(), p.data_.end(), '\0');
-    if(end == p.data_.end()) throw invalid_packet{"missing '\0'"};
+    if (end == p.data_.end()) throw invalid_packet{"missing '\0'"};
 
     string s{p.data_.begin(), end};
 
@@ -200,7 +199,7 @@ blob value::parse_blob(packet& p)
 {
     auto size = parse_int32(p);
 
-    if(p.size() < size) throw invalid_packet{"incomplete (blob)"};
+    if (p.size() < size) throw invalid_packet{"incomplete (blob)"};
     auto end = p.data_.begin() + size;
 
     blob b{p.data_.begin(), end};
@@ -214,7 +213,7 @@ blob value::parse_blob(packet& p)
 //////////////////////////////////////////////////if//////////////////////////////
 int64 value::parse_int64(packet& p)
 {
-    if(p.data_.size() < sizeof(int64)) throw invalid_packet{"incomplete (int64)"};
+    if (p.data_.size() < sizeof(int64)) throw invalid_packet{"incomplete (int64)"};
 
     int64 i = betoh(*reinterpret_cast<int64*>(p.data_.data()));
     p.data_.erase(p.data_.begin(), p.data_.begin() + sizeof(int64));
@@ -231,7 +230,7 @@ time value::parse_time(packet& p)
     using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
 
     time t; // epoch
-    if(auto i = parse_int64(p); i != 1)
+    if (auto i = parse_int64(p); i != 1)
     {
         // "shift" epoch from 1/1/1900 (osc) to 1/1/1970 (unix)
         // which is 70 years + 17 leap days
@@ -260,5 +259,4 @@ char value::parse_char(packet& p)
     return static_cast<char>(i);
 }
 
-//////////////////////////////////////////////////if//////////////////////////////
 }
