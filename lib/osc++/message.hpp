@@ -30,8 +30,8 @@ public:
     auto& values() const { return values_; }
     auto& values() { return values_; }
 
-    auto& value(std::size_t n) const { return values_[n]; }
-    auto& value(std::size_t n) { return values_[n]; }
+    auto& value(std::size_t n) const { return values_.at(n); }
+    auto& value(std::size_t n) { return values_.at(n); }
 
     message& operator<<(osc::value v)
     {
@@ -42,10 +42,8 @@ public:
     template<typename T>
     message& operator>>(T& x)
     {
-        auto v = std::move(values_.front());
+        x = std::move(values_.at(0).to<T>());
         values_.pop_front();
-
-        x = std::move(v.to<T>());
         return (*this);
     }
 
