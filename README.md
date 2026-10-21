@@ -30,29 +30,21 @@ sudo apt install libosc++-dev
 
 ### From source
 
-Stable version (requires [CMake](https://cmake.org/) >= 3.22):
+Latest release (requires [CMake](https://cmake.org/) >= 3.22, and
+[GoogleTest](https://github.com/google/googletest) to run tests):
 
 ```shell
-p=osc v=2.0.1
-wget https://github.com/dimitry-ishenko-cpp/${p}/archive/v${v}.tar.gz
-tar xzf v${v}.tar.gz
-mkdir ${p}-${v}/build
-cd ${p}-${v}/build
-cmake ..
-make
-sudo make install
-```
+o=dimitry-ishenko-cpp p=osc
 
-Latest master (requires [git](https://git-scm.com/) and
-[CMake](https://cmake.org/) >= 3.16):
+url=https://api.github.com/repos/${o}/${p}/releases/latest
+curl -Lo ${p}.tar.gz $(curl -sL $url | jq -r .tarball_url)
 
-```shell
-p=osc
-git clone --recursive https://github.com/dimitry-ishenko-cpp/${p}.git
-mkdir ${p}/build
+mkdir -p ${p}/build
+tar -xvf ${p}.tar.gz -C ${p} --strip-components=1
+
 cd ${p}/build
 cmake ..
-make
+make all test
 sudo make install
 ```
 
