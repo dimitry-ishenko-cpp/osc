@@ -20,7 +20,7 @@ std::size_t address_space::dispatch(std::size_t n, const element& e, time t)
 {
     if (e.is_message())
     {
-        auto m = e.to_message();
+        auto&& m = e.to_message();
         for (auto&& en : entries_)
             if (std::regex_match(m.address(), en.re))
             {
@@ -30,7 +30,7 @@ std::size_t address_space::dispatch(std::size_t n, const element& e, time t)
     }
     else if (e.is_bundle())
     {
-        auto b = e.to_bundle();
+        auto&& b = e.to_bundle();
         for (auto&& el : b.elements()) n = dispatch(n, el, b.time());
     }
 
