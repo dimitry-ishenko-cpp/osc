@@ -17,7 +17,7 @@
 namespace osc
 {
 
-namespace 
+namespace
 {
 
 template<std::integral T>
@@ -112,7 +112,6 @@ void value::append_to(packet& p, time t)
     using namespace std::chrono_literals;
 
     using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
-
     if (t != immed)
     {
         // "shift" epoch from 1/1/1970 (unix) to 1/1/1900 (osc)
@@ -141,7 +140,7 @@ void value::append_to(packet& p, char c)
     append_to(p, static_cast<int32>((unsigned char)c));
 }
 
-//////////////////////////////////////////////////if//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 value value::parse(packet& p, char tag)
 {
     switch(tag)
@@ -176,8 +175,7 @@ int32 value::parse_int32(packet& p)
 ////////////////////////////////////////////////////////////////////////////////
 float value::parse_float(packet& p)
 {
-    auto i = parse_int32(p);
-    return std::bit_cast<float>(i);
+    return std::bit_cast<float>(parse_int32(p));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +208,7 @@ blob value::parse_blob(packet& p)
     return b;
 }
 
-//////////////////////////////////////////////////if//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 int64 value::parse_int64(packet& p)
 {
     if (p.data_.size() < sizeof(int64)) throw invalid_packet{"incomplete (int64)"};
@@ -221,14 +219,13 @@ int64 value::parse_int64(packet& p)
     return i;
 }
 
-//////////////////////////////////////////////////if//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 time value::parse_time(packet& p)
 {
     using namespace std::chrono;
     using namespace std::chrono_literals;
 
     using fractions = duration<int64, std::ratio<1, 0x100000000>>; // 1/(2^32)
-
     time t; // epoch
     if (auto i = parse_int64(p); i != 1)
     {
@@ -245,18 +242,16 @@ time value::parse_time(packet& p)
     return t;
 }
 
-//////////////////////////////////////////////////if//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 double value::parse_double(packet& p)
 {
-    auto i = parse_int64(p);
-    return std::bit_cast<double>(i);
+    return std::bit_cast<double>(parse_int64(p));
 }
 
-//////////////////////////////////////////////////if//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 char value::parse_char(packet& p)
 {
-    auto i = parse_int32(p);
-    return static_cast<char>(i);
+    return static_cast<char>(parse_int32(p));
 }
 
 }
