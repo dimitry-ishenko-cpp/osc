@@ -1,3 +1,35 @@
+osc++ (2.1) unstable; urgency=medium
+
+  * Prepare for 2.1 release
+  * CMakeLists: don't build examples by default
+  * CMakeLists: update build instructions
+  * example/CMakeLists: fix linking
+  * README: fix CMake version reqiurement
+  * value: better precision in time conversion
+  * Style tweak
+  * dispatch: avoid copying
+  * bundle: check bounds and pop after conversion
+  * message: check bounds and pop after conversion
+  * Add Debian release workflow
+  * Switch to using std::string_view
+  * value: refactor
+  * elements: use fold expressions
+  * message: tighten up
+  * message: refactor
+  * bundle: refactor
+  * values: use fold expressions
+  * value: use std::bit_cast
+  * Clean up and tweak formatting
+  * Add basic tests
+  * CMakeLists: drop support for Ubuntu Focal
+  * Add examples
+  * README: update code examples
+  * README: formatting
+  * README: switch to cccp-linux
+  * d/copyright: formatting
+
+ -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Wed, 21 Oct 2026 15:45:09 -0400
+
 osc++ (2.0.1) unstable; urgency=medium
 
   * d/control: update
